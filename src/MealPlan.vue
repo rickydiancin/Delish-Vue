@@ -52,7 +52,10 @@
           </div>
           <button type="button">Add a Recipe / Product</button>
         </td>
-      </tr>      
+      </tr> 
+      <tr>
+        <td colspan="6">{{totalPrice}}</td>
+      </tr>     
     </table>
     <br />
     <br />
@@ -60,41 +63,81 @@
 </template>
 
 <script>
-import draggable from 'vuedraggable'
+  import draggable from 'vuedraggable';
 
-export default {
-  components: {
-    draggable,
-  },
-  data() {
-    return {
-      maximizeProducts: [],
-      plan: null,
-      active: {
-        breakfast: 0,
-        am_snack: 0,
-        lunch: 0,
-        pm_snack: 0,
-        dinner: 0,
-      },
-      labels: {
-        breakfast: 'Breakfast',
-        am_snack: 'AM Snack',
-        lunch: 'Lunch',
-        pm_snack: 'PM Snack',
-        dinner: 'Dinner',
+  let mealplanPath = 'https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/';
+  export default {
+    components: {
+      draggable,
+    },
+    data() {
+      return {
+
+        maximizeProducts: [],
+        plan: null,
+        active: {
+          breakfast: 0,
+          am_snack: 0,
+          lunch: 0,
+          pm_snack: 0,
+          dinner: 0,
+        },
+        labels: {
+          breakfast: 'Breakfast',
+          am_snack: 'AM Snack',
+          lunch: 'Lunch',
+          pm_snack: 'PM Snack',
+          dinner: 'Dinner',
+        }
       }
-    }
-  },
-  mounted() {
-    fetch('https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/awesome-meal-101')
+    },
+    mounted() {
+
+      fetch(`${mealplanPath}${this.getMealPlanHandle()}`)
       .then(res => res.json())
       .then(r => this.plan = r.plan);
-  },
-  methods: {
-    expandMeal(mealName) {
-      this.active[mealName] = this.active[mealName] === 1 ? 0 : 1;
+    },
+    computed: {
+      totalPrice: function () {
+        // console.log(this.plan);
+        // console.log( _.sumBy(val[i], 'cal'));
+        // _.sumBy(val[i], 'cal');
+
+        console.log(_.reduce(_.sumBy(this.plan, 'cal'), function(sum, n) {
+          return sum + n;
+        }, 0));
+
+        _.map(this.plan, function(val, key){
+          console.log(key);
+          for (var i = 1; i <= 7; i++) {
+            console.log( _.sumBy(val[i], 'cal'));
+            // var totalCount = _.sumBy(val[i], function(prop) {
+            //   return 1;
+            //   return _.sumBy(val, prop);
+            // })
+            // console.log(val);
+            // console.log(totalCount);
+            // var totalCount = _.sumBy(val, _.partial(_.sumBy, items));
+          }
+        });
+        // self.mealTable.total[i].cal += parseFloat(val[i].cal);
+        // self.mealTable.total[i].protein += parseFloat(val[i].protein);
+        // self.mealTable.total[i].fat += parseFloat(val[i].fat);
+        // self.mealTable.total[i].carbs += parseFloat(val[i].carbs);
+        // self.mealTable.total[i].price += parseFloat(val[i].price);
+
+        return 1;
+      }
+    },
+    methods: {
+      expandMeal(mealName) {
+        this.active[mealName] = this.active[mealName] === 1 ? 0 : 1;
+      },
+      getMealPlanHandle(){
+        var pageURL = window.location.href;
+        var lastURLSegment = pageURL.substr(pageURL.lastIndexOf('/') + 1);
+        return lastURLSegment;   
+      }
     }
   }
-}
 </script>
