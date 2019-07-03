@@ -1,0 +1,13 @@
+jobs:
+   stage: deploy
+   variables:
+        GIT_STRATEGY: none
+   script:
+   - pwd
+   - cd /home/shopify/public_html/
+   - git clone git@git.ebpearls.com:shopify/delish-shopify-vue.git
+   - git config user.name "gorakh.shrestha"
+   - git config user.email "gorakh.shrestha@ebpearls.com"
+   - git pull origin master
+   only:
+    - master
