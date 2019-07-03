@@ -47,27 +47,40 @@
         <td v-for="(products, day) in meal">
           <div v-if="active[mealName]">
             <draggable v-model="plan[mealName][day]" group="people" @start="drag=true" @end="drag=false" style="min-height: 100px;">
-              <div v-for="(product, index) in products" :key="index" class="meal-table-product">{{product.title}}</div>
+              <div 
+                v-for="(product, index) in products" 
+                :key="index" 
+                class="meal-table-product"
+              >{{product.title}}</div>
             </draggable>
           </div>
-          <button type="button">Add a Recipe / Product</button>
+          <button type="button" @click="openModal(plan[mealName][day])">Add a Recipe / Product</button>
         </td>
       </tr>      
     </table>
     <br />
     <br />
+    <Modal
+      :products="selectedProducts" 
+      :open="modal" 
+      @closeModal="modal = false"
+    />
   </section>
 </template>
 
 <script>
 import draggable from 'vuedraggable'
+import Modal from './components/SearchProductModal.vue'
 
 export default {
   components: {
     draggable,
+    Modal,
   },
   data() {
     return {
+      modal: false,
+      selectedProducts: null,
       maximizeProducts: [],
       plan: null,
       active: {
@@ -94,6 +107,10 @@ export default {
   methods: {
     expandMeal(mealName) {
       this.active[mealName] = this.active[mealName] === 1 ? 0 : 1;
+    },
+    openModal(products) {
+      this.selectedProducts = products;
+      this.modal = true;
     }
   }
 }
