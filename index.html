@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.3.1/css/bootstrap.css" integrity="sha256-Nfu23DiRqsrx/6B6vsI0T9vEVKq1M6KgO8+TV363g3s=" crossorigin="anonymous" />
+
+	<style>
+		/* Meal plan maximize */
+		.meal-plan-maximize-container {
+			border-radius: 10px;
+			border: 1px solid #CCC;
+			min-height: 100px;
+		}
+		.meal-plan-maximize-wrapper {
+			padding: 20px;
+		}
+		.maximize-draggable-zone {
+			background-color: #FFF;
+			overflow: hidden;
+			min-height: 50px;
+		}
+		.maximize-draggable-zone > div {
+			float: left;
+			padding: 15px 50px;
+			background-color: yellow;
+			border: 1px dotted red; 
+		}
+
+		/* Meal plan table details page */
+		.meal-plan-table {
+			margin-top: 50px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+
+		.meal-plan-table td {
+			padding: 20px;
+			vertical-align: top;
+			min-height: 100px;
+			height: auto;
+		}
+
+		.meal-plan-purchase-btn {
+			background-color: yellow;
+			border-radius: 20px;
+			padding: 10px 15px;
+		}
+
+		.meal-plan-purchase-btn button {
+			background-color: transparent;
+			border: none;
+		}
+
+		/* Table product */
+		.meal-table-product {
+			padding: 14px 20px;
+			border: 1px dotted red;
+			text-align: center;
+		}
+	</style>
+</head>
+<body>
+	<div id="mea-plan-app"></div>
+	<script src="./assets/bundle.js"></script>
+</body>
+</html>
