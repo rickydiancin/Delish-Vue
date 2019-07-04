@@ -5,18 +5,22 @@ const { VueLoaderPlugin } = require('vue-loader');
 module.exports = {
 	mode: 'development',
 	entry: [
-		'./src/app.js',
+	'./src/app.js',
 	],
 	module: {
 		rules: [
-			{
-				test: /\.vue$/,
-				use: 'vue-loader',
-			}
+		{
+			test: /\.vue$/,
+			use: 'vue-loader',
+		},
+		{
+			test: /\.css$/i,
+			use: ['style-loader', 'css-loader'],
+		},
 		]
 	},
 	plugins: [
-		new VueLoaderPlugin(),
+	new VueLoaderPlugin(),
 	],
 	watch: true,
 	output: {
