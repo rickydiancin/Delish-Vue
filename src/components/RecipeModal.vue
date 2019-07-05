@@ -215,6 +215,7 @@
       removeChosenProduct(product) {
         this.removeProduct(product)
         this.$events.fire('removeFromSearchList', product)
+        this.$events.fire('removeFromMaxPotential', product)
       },
       /**
        * Save selected meals to plan
@@ -224,7 +225,15 @@
       confirm() {
         let products = this.selectedPlanRecipes
         
+        // filter out maximize product
+        let maxPotentialProduct = _.filter(this.selectedPlanRecipes, (recipe) => {
+          recipe.max_potential -= 1;
+          return (recipe.type == 'recipe' && recipe.new == true);
+        });
+        
+        this.$events.fire('addMaxPotentialItem', maxPotentialProduct)
         this.$emit('confirm', products)
+
         // this.$toasted.show('Day meal plan recipes updated');
       },
     }

@@ -50,6 +50,8 @@
 			}
 		},
 		mounted() {
+			this.product.new = true
+
 			// Check if the product is within the chosen ingrident list, if yes checkbox = true
 			const index = _.findIndex(this.products, {id: this.product.id})
 
