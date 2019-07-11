@@ -121,6 +121,7 @@
     },
     data() {
       return {
+        selectedPlanChanged: false,
         baseUrl: window.middleware_base_url,
         search: false,
         // default
@@ -145,9 +146,12 @@
       const products = _.clone(this.mealPlanProducts)
       
       // Show only recipe product type
-      this.selectedPlanRecipes = products.filter((product) => {
-        return product.type === 'recipe'
-      })
+      this.selectedPlanRecipes = products.map((product) => {
+        if(product.type === 'recipe') {
+          product.new = false;
+          return product;
+        }
+      });
     },
     methods: {
       // Search recipe products
@@ -195,6 +199,8 @@
         } else {
           this.selectedPlanRecipes[index].qty += product.qty
         }
+
+        this.selectedPlanChanged = true;
       },
       /**
        * Remove selected product from chosen ingridents tab
@@ -205,6 +211,7 @@
       removeProduct(product) {
         let index = _.findIndex(this.selectedPlanRecipes, product)
         this.selectedPlanRecipes.splice(index, 1)
+        this.selectedPlanChanged = true;
       },
       /**
        * Remove chosen product
@@ -225,13 +232,22 @@
       confirm() {
         let products = this.selectedPlanRecipes
         
-        // filter out maximize product
-        let maxPotentialProduct = _.filter(this.selectedPlanRecipes, (recipe) => {
-          recipe.max_potential -= 1;
-          return (recipe.type == 'recipe' && recipe.new == true);
-        });
-        
-        this.$events.fire('addMaxPotentialItem', maxPotentialProduct)
+        if(this.selectedPlanChanged) {
+          const m = [...this.selectedPlanRecipes];
+
+          const maxPotentialProduct = _.filter(m, (r) => {
+            if(r.new === true) {
+              if(r.max_potential > 1) {
+                r.remain_max_potential = r.max_potential - 1;
+                return true;
+              }
+            }
+          });
+          
+          this.$events.fire('addMaxPotentialItem', maxPotentialProduct)
+          this.selectedPlanChanged = false;
+        }
+
         this.$emit('confirm', products)
 
         // this.$toasted.show('Day meal plan recipes updated');
