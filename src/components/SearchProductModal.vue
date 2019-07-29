@@ -1,6 +1,6 @@
 <!-- Popup modal to search for recipes and product -->
 <template>
-	<div class="modal-open">
+	<div class="modal-open meal-select-modal">
 		<div 
 			class="modal fade in" 
 			tabindex="-1" 
@@ -20,8 +20,16 @@
 		        	<span aria-hidden="true">&times;</span>
 		       	</button>
 		        <h4 class="modal-title">
-		        	<button type="button" @click="group = 1">Recipe</button>
-		        	<button type="button" @click="group = 2">Product</button>
+		        	<button 
+		        		type="button" 
+		        		@click="group = 1"
+		        		:class="group == 1 ? 'modal-active' : ''" 
+		        	>Recipe</button>
+		        	<button 
+		        		type="button" 
+		        		@click="group = 2"
+		        		:class="group == 2 ? 'modal-active' : ''" 
+		        	>Product</button>
 		        </h4>
 		      </div>
 		      <div class="modal-body">

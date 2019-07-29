@@ -16,7 +16,7 @@
 								<span class="m-form__help"><strong>Note: Copying will override the meals already entered.</strong></span>
 								<br />
 								<label for="recipient-name" class="form-control-label">Days:</label>
-								<select class="form-control m-input m-input--square" v-model="days">
+								<select class="form-control m-input m-input--square" id="copy-meal-plan" v-model="days">
 									<option value="1">Day 1</option>
 									<option value="2">Day 2</option>
 									<option value="3">Day 3</option>
@@ -27,7 +27,11 @@
 								</select>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary" @click="submitCopyDay">Copy</button>
+								<button 
+									type="button" 
+									class="btn btn-primary btn-yellow" 
+									@click="submitCopyDay"
+								>Copy</button>
 							</div>
 						</div>
 					</div>

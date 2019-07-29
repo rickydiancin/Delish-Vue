@@ -3,7 +3,7 @@
     <vue-progress-bar></vue-progress-bar>
     <button 
       type="button" 
-      class="confirm-btn btn btn-medium btn-primary" 
+      class="confirm-btn btn btn-primary btn-auto" 
       @click="confirm"
     >Confirm</button>
     <div class="chosen-ingridents">
@@ -15,7 +15,7 @@
         >
           <div>
             <button 
-              class="delete-product" 
+              class="delete-product"
               type="button" 
               @click="removeChosenProduct(product)"
             >
@@ -81,7 +81,7 @@
         </div>                  
         <br />
         <div class="row" v-if="products.length > 0">
-          <div class="col-md-3" v-for="product in products">
+          <div class="col-md-3 col-sm-4" v-for="product in products">
             <selectable-recipe
               :products="selectedPlanRecipes"
               :product="product"
@@ -91,7 +91,7 @@
           </div>
         </div>
       </div>
-      <div style="margin-top: 10px">
+      <div class="pagination-page">
         <b-pagination
           v-model="currentPage"
           :total-rows="rows"
@@ -146,11 +146,12 @@
       const products = _.clone(this.mealPlanProducts)
       
       // Show only recipe product type
-      this.selectedPlanRecipes = products.map((product) => {
+      this.selectedPlanRecipes = _.filter(products, (product) => {
         if(product.type === 'recipe') {
           product.new = false;
-          return product;
+          return true;
         }
+        return false;
       });
     },
     methods: {

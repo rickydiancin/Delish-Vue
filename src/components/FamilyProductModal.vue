@@ -3,7 +3,7 @@
     <vue-progress-bar></vue-progress-bar>
     <button 
       type="button" 
-      class="confirm-btn btn btn-medium btn-primary" 
+      class="confirm-btn btn btn-primary btn-auto" 
       @click="confirm"
     >Confirm Ingredients</button>
     <div class="chosen-ingridents">
@@ -105,7 +105,7 @@
         </div>                  
         <br />
         <div class="row" v-if="products.length > 0">
-          <div class="col-3" v-for="product in products">
+          <div class="col-lg-3 col-sm-4" v-for="product in products">
             <selectable-product
               :products="selectedPlanProducts"
               :product="product"
@@ -116,7 +116,7 @@
           </div>
         </div>
       </div>
-      <div style="margin-top: 10px">
+      <div class="pagination-page">
         <b-pagination
           v-model="currentPage"
           :total-rows="rows"

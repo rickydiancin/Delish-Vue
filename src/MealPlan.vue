@@ -1,15 +1,15 @@
 <template>
-  <section v-if="plan != null" style="margin-top: 50px; margin-left: 10px; margin-right: 10px;">
-    <div class="" style="margin-left: 60px; margin-right: 60px;">
+  <section v-if="plan != null" class="meal-plan-wrapper" style="margin-top: 50px; margin-left: 10px; margin-right: 10px;">
+    <div class="meal-plan-container" style="margin-left: 60px; margin-right: 60px;">
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-lg-5 col-md-12">
           <h2>DIY meal plan</h2>
         </div>
-        <div class="col-md-6">
-          <div class="pull-right">
-            <span>Name of Meal Plan</span>
-            <input type="text" :value="mealPlanName" />
-            <label class="meal-plan-purchase-btn">
+        <div class="col-lg-7 col-md-12">
+          <div class="diy-mp-right">
+            <span>Name of Meal Plans</span>
+            <input type="text" v-model="mealPlanName" />
+            <label class="meal-plan-purchase-btn btn btn-yellow btn-large">
               <button type="button" @click="purchaseMealPlan">Purchase Meal Plan</button>
               <span>${{_.reduce(totalPrice, function(sum, item) {return sum + item.price; }, 0)}} AUD</span> 
             </label>
@@ -21,24 +21,25 @@
           <div class="meal-plan-maximize-container">
             <div class="meal-plan-maximize-wrapper">
               <h3>Maximise my value</h3>
-              <label>You have ingridents in your recipes that may go to waste.Drop and drag in more servings to get maximum value.</label>
+              <label>You have ingridents in your recipes that may go to waste. <span>Drop and Drag</span> in more servings to get maximum value.</label>
               <div :key="maxRecipeKey">
                 <draggable
-                  :id="123456" 
+                  id="max-potential-contain" 
                   v-model="maxPotentialItems" 
                   :group="{name: 'people', pull: 'clone'}"
                   @start="drag=true"
                   @remove="onMaximizeRecipeDropEnd"
                   class="maximize-draggable-zone"
                 >
-                <div 
-                  v-for="(product, index) in maxPotentialItems" 
-                  :key="index" 
-                  :id="product.id"
-                  style="margin-right: 10px;"
-                >
-                  {{product.title}} <span v-if="product.max_potential"> x {{ parseInt(product.remain_max_potential)}}</span>
-                </div>
+                  <div 
+                    class="btn-drag-yellow btn-drag"
+                    v-for="(product, index) in maxPotentialItems" 
+                    :key="index" 
+                    :id="product.id"
+                    style="margin-right: 10px;"
+                  >
+                    {{product.title}} <span v-if="product.max_potential"> x {{ parseInt(product.remain_max_potential)}}</span>
+                  </div>
               </draggable>
             </div>
           </div>
@@ -49,18 +50,29 @@
   <table border="1" class="meal-plan-table">
     <tr>
       <td></td>        
-      <td v-for="day in 7">
-        <h2>Day {{day}}</h2>
+      <td 
+        v-for="day in 7"
+        @click="onDaySelect(day)"
+        :class="checkIfDayIsSelected(day)"
+      >
+        <h4 class="meal-day-tag">Day {{day}}</h4>
         <span class="pull-right trash-and-clone">
-          <button type="button" @click="deleteMealBy(day,'column')">DEL</button>
           <button
+            class="btn-meal-action btn-meal-delete" 
+            type="button" 
+            @click="deleteMealBy(day,'column')"
+          >
+            <img src="https://cdn2.shopify.com/s/files/1/0060/1204/3337/files/delete1.svg?253746" />
+          </button>
+          <button
+            class="btn-meal-action btn-meal-copy" 
             type="button" 
             href="javascript:void(0)" 
             data-toggle="modal" 
             data-target="#copy_meal_plan" 
             @click="copyMealPlan(day)"
           >
-            COPY
+            <img src="https://cdn2.shopify.com/s/files/1/0060/1204/3337/files/copy2.svg?253746" />
           </button>
         </span>
         <br />
@@ -77,11 +89,33 @@
       </td>        
     </tr>
     <tr v-for="(meal, mealName) in plan">
-      <td>
-        {{ mealTable.meal[mealName].name }} 
-        <button type="button" @click="expandMeal(mealName)">^</button>
+      <td 
+        class="day-meal-toggle day-meal-selected"
+      >
+        <!-- logo images -->
+        <img v-if="mealName == 'breakfast'" src="https://cdn.shopify.com/s/files/1/0060/1204/3337/files/breakfast.svg?268211" class="svg" />
+        <img v-if="mealName == 'am_snack'" src="https://cdn.shopify.com/s/files/1/0060/1204/3337/files/snack.svg?268211" class="svg" />
+        <img v-if="mealName == 'pm_snack'" src="https://cdn.shopify.com/s/files/1/0060/1204/3337/files/snack.svg?268211" class="svg" />
+        <img v-if="mealName == 'lunch'" src="https://cdn.shopify.com/s/files/1/0060/1204/3337/files/lunch.svg?268211" class="svg" />
+        <img v-if="mealName == 'dinner'" src="https://cdn.shopify.com/s/files/1/0060/1204/3337/files/dinner.svg?268211" class="svg" />
+        
+        <label :class="'meal-for-day ' + 'meal-' + mealName">{{ mealTable.meal[mealName].name }}</label> 
+        <button type="button" @click="expandMeal(mealName)">
+          <span 
+            class="cs-font clever-icon-arrow-left arrow-icon" 
+            v-if="mealTable.meal[mealName].hide === true"
+          ></span>
+          <span 
+            class="cs-font clever-icon-arrow-right arrow-icon" 
+            v-if="mealTable.meal[mealName].hide === false"
+          ></span>
+        </button>
       </td>
-      <td v-for="(products, day) in meal">
+      <td 
+        v-for="(products, day) in meal"
+        @click="onDaySelect(day)"
+        :class="checkIfDayIsSelected(day)"
+      >
         <div v-if="mealTable.meal[mealName].hide">
           <draggable 
             v-model="plan[mealName][day]" 
@@ -89,18 +123,34 @@
             @start="drag=true" 
             @end="drag=false" 
             :move="onMove"
-            style="min-height: 100px;"
           >
             <div
               v-for="(product, index) in products" 
               :key="index" 
-              class="meal-table-product"
+              class="btn-drag"
+              :class="product.type == 'recipe' ? 'btn-drag-green recipe-drag' : 'btn-drag-purple product-drag'"
             >{{product.title}}</div>
             {{displayFamilyProduct(products)}}
           </draggable>
         </div>
-        <button type="button" @click="copyMealPlan(day,mealName)">+ copy plan to another day</button>
-        <button type="button" @click="openModal(plan[mealName][day], mealName, day)">Add a Recipe / Product</button>
+        <button 
+          v-if="products.length > 0" 
+          type="button" 
+          @click="copyMealPlan(day,mealName)"
+          class="btn-meal-day-action"
+        >+ copy plan to another day</button>
+        <button
+          v-if="products.length > 0" 
+          type="button" 
+          class="btn-meal-day-action"
+          @click="openModal(plan[mealName][day], mealName, day)"
+        >+ Add more</button>
+        <button 
+          v-if="products.length <= 0" 
+          type="button" 
+          class="btn-drag"
+          @click="openModal(plan[mealName][day], mealName, day)"
+        >Add Recipes/Products</button>
       </td>
     </tr> 
     <tr>
@@ -116,21 +166,23 @@
             :thickness="40"
             has-legend 
             legend-placement="bottom"
-            :total="100"
+            :total="110"
             :start-angle="0"
           >
             Day {{day}}<br> Macro Graph
           </vc-donut>
         </div>
         <div class="chart-details">
-          <h4>Total:</h4>
+          <p>Total:</p>
           <ul class="daily-bdown">
-            <li>Calories <span>{{(totalPrice[day].cal).toFixed(2)}} cal</span></li>
-            <li>Fat <span>{{(totalPrice[day].fat).toFixed(2)}}g</span></li>
-            <li>Protein <span>{{(totalPrice[day].protein).toFixed(2)}}g</span></li>
-            <li>Carbs <span>{{(totalPrice[day].carbs).toFixed(2)}}g</span></li>
+            <li class="calories">Calories <span>{{(totalPrice[day].cal).toFixed(2)}} cal</span></li>
+            <li class="fat">Fat <span>{{(totalPrice[day].fat).toFixed(2)}}g</span></li>
+            <li class="protein">Protein <span>{{(totalPrice[day].protein).toFixed(2)}}g</span></li>
+            <li class="carbs">Carbs <span>{{(totalPrice[day].carbs).toFixed(2)}}g</span></li>
           </ul>
-          <h3>Daily Total: <span>${{(totalPrice[day].price).toFixed(2)}}</span></h3>
+          <div class="meal-daily-total">
+            <p>Daily Total: <span>${{(totalPrice[day].price).toFixed(2)}}</span></p>
+          </div>
         </div>
       </td>   
     </tr>  
@@ -158,11 +210,13 @@
 </template>
 
 <script>
-  import CopyMealPlan from './components/CopyMealPlan.vue'
-  import draggable from 'vuedraggable'
-  import Modal from './components/SearchProductModal.vue'
-  let mealplanPath = 'https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/';
+  import CopyMealPlan from './components/CopyMealPlan.vue';
+  import draggable from 'vuedraggable';
+  import Modal from './components/SearchProductModal.vue';
+  import axios from 'axios';
 
+  let mealplanPath = 'https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/';
+  
   export default {
     components: {
       draggable,
@@ -171,8 +225,10 @@
     },
     data() {
       return {
+        baseUrl: 'http://shopify.draftserver.com/delish-deliveries/public/api/',
         maxRecipeKey: 0,
         mealPlanName: '',
+        mealPlanId: null,
         maxPotentialItems: [],
         modal: false,
         selectedProducts: null,
@@ -221,6 +277,16 @@
           },
           total: {},
         },
+        dayActive: [
+          {
+            day: 1,
+            active: false,
+          },
+          {
+            day: 2,
+            active: false,
+          },
+        ]
       }
     },
     computed: {
@@ -238,6 +304,7 @@
           6: {cal: 0, fat: 0, protein: 0, carbs: 0, cal_p: 0, price: 0}, 
           7: {cal: 0, fat: 0, protein: 0, carbs: 0, cal_p: 0, price: 0}, 
         };
+
         _.map(this.plan, function(val, key){
           for (var i = 1; i <= 7; i++) {
             total[i].cal += _.sumBy(val[i], function(item) { return parseFloat(item.cal); });
@@ -245,7 +312,7 @@
             total[i].fat += _.sumBy(val[i], function(item) { return parseFloat(item.fat); });
             total[i].carbs += _.sumBy(val[i], function(item) { return parseFloat(item.carbs); });
             total[i].price += _.sumBy(val[i], function(item) { return parseFloat(item.price); });
-            total[i].cal_p = ( typeof self.max_calorie == "number" && self.max_calorie > 0 ) ? parseFloat( (total[i].cal * 100)/self.max_calorie ) : 3;
+            total[i].cal_p = ( typeof self.max_calorie == "number" && self.max_calorie > 0 ) ? parseFloat( (total[i].cal * 100)/self.max_calorie ) : 0;
           }
         });
 
@@ -258,13 +325,24 @@
        }
      },
      mounted() {
-      fetch(`${mealplanPath}${this.getMealPlanHandle()}`)
-        .then(res => res.json())
-        .then((r) => {
-          this.plan = r.plan;
-          this.mealPlanName = r.title;
-          this.max_calorie = parseFloat(r.max_calorie);
-        });
+      if(window.location.pathname == '/pages/create-meal-plan') {
+        this.plan = {
+          breakfast: {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []},
+          am_snack: {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []},
+          lunch: {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []},
+          pm_snack: {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []},
+          dinner: {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: []},
+        }
+      } else {
+        fetch(`${mealplanPath}${this.getMealPlanHandle()}`)
+          .then(res => res.json())
+          .then((r) => {
+            this.plan = r.plan;
+            this.mealPlanName = r.title;
+            this.mealPlanId = r.id;
+            this.max_calorie = parseFloat(r.max_calorie);
+          });
+      }
 
       this.$events.listen('addMaxPotentialItem', (recipes) => {
         _.each(recipes, (recipe) => {
@@ -288,26 +366,77 @@
       });
     },
     methods: {
+      onDaySelect(day) {
+        this.dayActive = _.map(this.dayActive, (row) => {
+          if(row.day == parseInt(day)) {
+            row.active = true;
+          } else {
+            row.active = false;
+          }
+          return row;
+        });
+      },
+      checkIfDayIsSelected(day) {
+        let x = '';
+
+        _.each(this.dayActive, (row) => {
+          if(row.day === parseInt(day) && row.active === true) {
+            x = 'day-selected';
+          }
+        });
+
+        return x;
+      },
       displayFamilyProduct() {
-        // return (<div>TEST</div>);
+        //
       },
       purchaseMealPlan() {
+        // Three cases for purchase meal plan
+        // 1. When user create from scratch
+        // 2. When user create from scratch but for a partner
+        // 3. When user edit pre defined meals
+        
         const url = window.location.pathname.split('/');
-        const handle = url[2];
+        const productHandle = url[2];
+        let formData = {};        
+
+        if(window.location.pathname == '/pages/create-meal-plan') {
+          formData = {
+            customer_id: loggedCustomerId, // value comes from liquid (parent page shopify)
+            product_handle: 'customer-meal-plan',
+            meal_plan_id: 0,
+            name: this.mealPlanName,
+            meal_plan: JSON.stringify(this.plan),
+            for_partner: false,
+          };
+        } else {
+          formData = {
+            customer_id: loggedCustomerId,
+            product_handle: productHandle,
+            meal_plan_id: this.mealPlanId,
+            name: this.mealPlanName,
+            meal_plan: JSON.stringify(this.plan),
+            for_partner: false,
+          };
+        }
 
         // save price of meal plan and meal plan table to the storage
         const mealPlan = {
           customerId: loggedCustomerId,
-          product_handle: handle,
+          product_handle: productHandle,
           name: this.mealPlanName,
           price: _.reduce(this.totalPrice, function(sum, item) {return sum + item.price; }, 0),
           plan: this.plan,
         };
         
-        sessionStorage.removeItem('meal-plan');
-        sessionStorage.setItem('meal-plan', JSON.stringify(mealPlan));
-        
-        window.location.href = `/pages/purchase-meal-plan?handle=${handle}`;
+        axios.post(this.baseUrl + 'customer-meal-plan', formData)
+          .then((res) => {
+            sessionStorage.setItem('meal-plan', JSON.stringify(mealPlan));
+            window.location.href = `/pages/purchase-meal-plan?handle=${productHandle}`;
+          })
+          .catch(() => {
+            // 
+          });
       },
       // When user drops recipe from maximize section
       onMaximizeRecipeDropEnd(e) {
@@ -323,7 +452,7 @@
         this.maxRecipeKey++;
       },
       onMove(e) {
-        if(e.to.id == '123456') {
+        if(e.to.id == 'max-potential-contain') {
           return false;
         }
       },

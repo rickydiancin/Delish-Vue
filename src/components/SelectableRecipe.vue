@@ -1,5 +1,5 @@
 <template>
-	<section class="meal-products-lists list-w-tag">
+	<section class="meal-products-lists list-w-tag meal-product-modal">
 		<div class="meal-product-be">
 			<span class="checkbox-relative">
 				<input 
