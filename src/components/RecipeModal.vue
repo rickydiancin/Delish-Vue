@@ -29,7 +29,7 @@
             </label>
             <div class="image-buttons">
               <div class="meal-list-img">
-                <img v-if="product.image" :src="baseUrl + product.image" alt="no img" width="50" />
+                <img v-if="product.image" :src="baseUrl + product.image" alt="no img" />
                 <img v-if="!product.image" :src="baseUrl + defaultImg" alt="no img" />
               </div>
             </div>

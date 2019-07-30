@@ -7,6 +7,7 @@ import VueProgressBar from 'vue-progressbar'
 import Donut from 'vue-css-donut-chart';
 import 'vue-css-donut-chart/dist/vcdonut.css';
 import BootstrapVue from 'bootstrap-vue'
+
 // import VuejsDialog from 'vuejs-dialog';
 
 window.middleware_base_url = 'http://shopify.draftserver.com/delish-deliveries/public/';
