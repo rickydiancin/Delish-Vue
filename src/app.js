@@ -34,8 +34,10 @@ Vue.use(VueProgressBar, {
 });
 
 if(document.getElementById('mea-plan-app')) {
+	console.log('loading app...');
 	new Vue({
 		el: "#mea-plan-app",
 		render: h => h(MealPlan),
 	});
+	console.log('app loaded...');
 }

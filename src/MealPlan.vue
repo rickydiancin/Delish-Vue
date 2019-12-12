@@ -391,7 +391,7 @@ class="btn-drag"
 					});
 					return {columns: _columns, rows: _rows};
 				}
-			},
+		},
 			mounted() {
 				if(window.location.pathname == '/pages/create-meal-plan') {
 					this.plan = {
@@ -404,49 +404,51 @@ class="btn-drag"
 				} else {
 					var id = getParameter('customer_meal_plan_id');
 
-				// if the meal plan is custom made by client, fetch that meal plan data
-				if(id) {
-					axios.get(window.middleware_base_url + `api/customer-meal-plan/plan/${id}`)
-					.then((r) => {
-						const m = r.data.data;
-						this.mealPlanId = m.id;
-						this.mealPlanName = m.name;
-						this.plan = m.plan;
-						this.max_calorie = 0;
-					});
-				} else {
-					axios.get(`${mealplanPath}${this.getMealPlanHandle()}`)
-					.then((res) => {
-						const r = res.data;
-						this.mealPlanId = r.id;
-						this.mealPlanName = r.title;
-						this.plan = r.plan;
-						this.max_calorie = parseFloat(r.max_calorie);
-					});
-				}
-			}
-
-			this.$events.listen('addMaxPotentialItem', (recipes) => {
-				_.each(recipes, (recipe) => {
-					if(recipe.new != true) {
-						return;
-					}
-
-					let index = _.findIndex(this.maxPotentialItems, {id: recipe.id});
-
-					if(index != -1) {
-						this.maxPotentialItems[index].remain_max_potential += recipe.remain_max_potential;
+					// if the meal plan is custom made by client, fetch that meal plan data
+					if(id) {
+						axios.get(window.middleware_base_url + `api/customer-meal-plan/plan/${id}`)
+						.then((r) => {
+							const m = r.data.data;
+							this.mealPlanId = m.id;
+							this.mealPlanName = m.name;
+							this.plan = m.plan;
+							this.max_calorie = 0;
+						});
 					} else {
-						this.maxPotentialItems.push(recipe);
+						console.log('meal plan loaded created by admin');
+						axios.get(`${mealplanPath}${this.getMealPlanHandle()}`)
+							.then((res) => {
+								console.log(res);
+								const r = res.data;
+								this.mealPlanId = r.id;
+								this.mealPlanName = r.title;
+								this.plan = r.plan;
+								this.max_calorie = parseFloat(r.max_calorie);
+							});
 					}
-				});
-			});
+				}
 
-			this.$events.listen('removeFromMaxPotential', (recipe) => {
-				const index = _.findIndex(this.maxPotentialItems, {id: recipe.id});
-				this.maxPotentialItems = this.maxPotentialItems.splice(index, 0);
-			});
-		},
+				this.$events.listen('addMaxPotentialItem', (recipes) => {
+					_.each(recipes, (recipe) => {
+						if(recipe.new != true) {
+							return;
+						}
+
+						let index = _.findIndex(this.maxPotentialItems, {id: recipe.id});
+
+						if(index != -1) {
+							this.maxPotentialItems[index].remain_max_potential += recipe.remain_max_potential;
+						} else {
+							this.maxPotentialItems.push(recipe);
+						}
+					});
+				});
+
+				this.$events.listen('removeFromMaxPotential', (recipe) => {
+					const index = _.findIndex(this.maxPotentialItems, {id: recipe.id});
+					this.maxPotentialItems = this.maxPotentialItems.splice(index, 0);
+				});
+			},
 		methods: {
 			onDaySelect(day) {
 				this.dayActive = _.map(this.dayActive, (row) => {
