@@ -1198,6 +1198,11 @@ get-caller-file@^2.0.1:
   resolved "https://registry.yarnpkg.com/get-caller-file/-/get-caller-file-2.0.5.tgz#4f94412a82db32f36e3b0b9741f8a97feb031f7e"
   integrity sha512-DyFP3BM/3YHTQOCUL/w0OZHR0lpKeGrxotcHWcqNEdnltqFwXVfhEBQ94eIo34AfQpo0rGki4cyIiftY06h2Fg==
 
+get-parameter@^1.0.8:
+  version "1.0.8"
+  resolved "https://registry.yarnpkg.com/get-parameter/-/get-parameter-1.0.8.tgz#75a7aa01c43f977a1f15619efba014167f3a5582"
+  integrity sha1-daeqAcQ/l3ofFWGe+6AUFn86VYI=
+
 get-stream@^4.0.0:
   version "4.1.0"
   resolved "https://registry.yarnpkg.com/get-stream/-/get-stream-4.1.0.tgz#c1b255575f3dc21d59bfc79cd3d2b46b1c3a54b5"
@@ -3052,6 +3057,11 @@ vue-hot-reload-api@^2.3.0:
   version "2.3.3"
   resolved "https://registry.yarnpkg.com/vue-hot-reload-api/-/vue-hot-reload-api-2.3.3.tgz#2756f46cb3258054c5f4723de8ae7e87302a1ccf"
   integrity sha512-KmvZVtmM26BQOMK1rwUZsrqxEGeKiYSZGA7SNWE6uExx8UX/cj9hq2MRV/wWC3Cq6AoeDGk57rL9YMFRel/q+g==
+
+vue-inline-svg@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vue-inline-svg/-/vue-inline-svg-1.1.1.tgz#94b264d1471dedcec04e45a766e74ec5ba5a10a7"
+  integrity sha512-1ocVFGyKD+VfrbzI5MlaF+OXsI9tNtzAJSmtIE6THbP6YJCmknI4Xj61Y6QoR2SWSlVgwZfYLWbDO+NkP3Sprw==
 
 vue-loader@^15.7.0:
   version "15.7.0"

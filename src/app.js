@@ -10,7 +10,7 @@ import BootstrapVue from 'bootstrap-vue'
 
 // import VuejsDialog from 'vuejs-dialog';
 
-window.middleware_base_url = 'http://shopify.draftserver.com/delish-deliveries/public/';
+window.middleware_base_url = 'https://shopify.draftserver.com/delish-deliveries/public/';
 window.default_image = window.middleware_base_url + 'images/placeholder-200x200.png';
 
 // Vue.use(VuejsDialog, {

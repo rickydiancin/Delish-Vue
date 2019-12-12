@@ -179,7 +179,7 @@
 
         this.products = []
         
-        axios.get(`${window.base_url}/api/meal-plan/recipes/search/${this.keyword}/${this.selected.category}?page=${page}`)
+        axios.get(`${window.middleware_base_url}/api/meal-plan/recipes/search/${this.keyword}/${this.selected.category}?page=${page}`)
           .then((res) => {
             this.rows = res.data.data.total
             this.products = res.data.data.data
@@ -251,7 +251,9 @@
 
         this.$emit('confirm', products)
 
-        // this.$toasted.show('Day meal plan recipes updated');
+        // this.$toasted.show('Recipes are added to products');
+        
+        $.toaster({ message : 'Meal plan updated', title : '', priority : 'success' });
       },
     }
   }

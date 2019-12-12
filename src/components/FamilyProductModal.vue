@@ -208,7 +208,7 @@
 
         this.products = []
         
-        axios.get(`${window.base_url}/api/meal-plan/family-product/search/${this.keyword}/${this.selected.category}?page=${page}`)
+        axios.get(`${window.middleware_base_url}/api/meal-plan/family-product/search/${this.keyword}/${this.selected.category}?page=${page}`)
           .then((res) => {
             this.products = res.data.data.data
           })
@@ -295,7 +295,10 @@
         let products = this.selectedPlanProducts
 
         this.$emit('confirm', products)
-        // this.$toasted.show('Day meal plan products updated');
+        
+        // this.$toasted.show('Products are added to products');
+        
+        $.toaster({ message : 'Meal plan updated', title : '', priority : 'success' });
       },
     }
   }
