@@ -12,7 +12,7 @@
 								</button>
 							</div>
 							<div class="modal-body">
-								<span class="m-form__help">Select the day you want to copy the recipes and ingridents for this meal to.</span>
+								<span class="m-form__help">Select the day you want to copy the recipes and ingredients for this meal to.</span>
 								<span class="m-form__help"><strong>Note: Copying will override the meals already entered.</strong></span>
 								<br />
 								<label for="recipient-name" class="form-control-label">Days:</label>
