@@ -2,7 +2,7 @@
 	<section class="meal-products-lists list-w-tag meal-product-modal">
 		<div class="meal-product-be">
 			<span class="checkbox-relative">
-				<input 
+				<input
 					type="checkbox"
 					:true-value="1"
 					:false-value="0"
@@ -12,9 +12,9 @@
 			</span>
 	    <div class="product-box-cont">
 	      <label
-	      	class="qty-product" 
+	      	class="qty-product"
 	      	for="qty"
-	      >{{product.serving}}x</label>
+	      >{{product.max_potential}}x</label>
 	      <div class="image-buttons">
 		      <div class="meal-list-img">
 		      	<img v-if="product.image" :src="baseUrl + product.image" alt="no img"/>
@@ -69,7 +69,10 @@
 		methods: {
 			onProductCheckboxSelect() {
 				if(this.checkbox === 1) {
+					// const perPlatePrice = parseFloat(this.product.price) / parseFloat(this.product.max_potential);
+
 					this.product.qty = 1
+					// this.product.price = parseFloat(this.product.price);
 					this.$emit('addProduct', this.product)
 				} else {
 					this.$emit('removeProduct', this.product)

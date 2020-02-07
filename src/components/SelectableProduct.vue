@@ -2,7 +2,7 @@
 	<section class="meal-products-lists meal-product-modal">
 		<div class="meal-product-be">
 			<span class="checkbox-relative">
-				<input 
+				<input
 					type="checkbox"
 					:true-value="1"
 					:false-value="0"
@@ -11,8 +11,8 @@
 				/>
 			</span>
 			<div class="product-box-cont">
-				<label 
-					class="qty-product" 
+				<label
+					class="qty-product"
 	        for="qty"
 				>
 					{{qty}}x
@@ -23,21 +23,21 @@
 						<img v-if="!product.image" :src="baseUrl + defaultImg" alt="no img" />
 					</div>
 					<div class="meal-image-wrap">
-						<button 
+						<button
 							class="product-delete"
-							type="button" 
+							type="button"
 							@click="minus"
 						>-</button>
-						<input 
-							type="number" 
-							class="product-input-qty" 
-							v-model="qty" 
-							disabled="" 
-							min="1" 
+						<input
+							type="number"
+							class="product-input-qty"
+							v-model="qty"
+							disabled=""
+							min="1"
 						/>
-						<button 
-							type="button" 
-							class="product-add" 
+						<button
+							type="button"
+							class="product-add"
 							@click="add"
 						>+</button>
 					</div>
@@ -68,10 +68,10 @@
 		},
 		mounted() {
 			const index = _.findIndex(this.products, {id: this.product.id })
-		
+
 			if(index != -1) {
 				this.checkbox = 1
-				this.qty = this.products[index].qty
+				this.qty = this.products[index].max_potential
 			}
 
 			// listen to chosen ingrident event

@@ -9,18 +9,18 @@ module.exports = {
 	],
 	module: {
 		rules: [
-		{
-			test: /\.vue$/,
-			use: 'vue-loader',
-		},
-		{
-			test: /\.css$/i,
-			use: ['style-loader', 'css-loader'],
-		},
+			{
+				test: /\.vue$/,
+				use: 'vue-loader',
+			},
+			{
+				test: /\.css$/i,
+				use: ['style-loader', 'css-loader'],
+			},
 		]
 	},
 	plugins: [
-	new VueLoaderPlugin(),
+		new VueLoaderPlugin(),
 	],
 	watch: true,
 	output: {

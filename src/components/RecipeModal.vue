@@ -1,31 +1,31 @@
 <template>
   <section class="list-wrapper">
     <vue-progress-bar></vue-progress-bar>
-    <button 
-      type="button" 
-      class="confirm-btn btn btn-primary btn-auto" 
+    <button
+      type="button"
+      class="confirm-btn btn btn-primary btn-auto"
       @click="confirm"
     >Confirm</button>
     <div class="chosen-ingridents">
       <h5>Chosen Recipe/s</h5>
       <div class="meal-products-lists">
-        <div class="meal-product-be" 
-          v-for="(product, index) in selectedPlanRecipes" 
+        <div class="meal-product-be"
+          v-for="(product, index) in selectedPlanRecipes"
           :key="index"
         >
           <div>
-            <button 
+            <button
               class="delete-product"
-              type="button" 
+              type="button"
               @click="removeChosenProduct(product)"
             >
               x
             </button>
-            <label 
-              class="qty-product" 
+            <label
+              class="qty-product"
               for="quantity"
             >
-              {{product.serving}}x
+              {{product.max_potential}}x
             </label>
             <div class="image-buttons">
               <div class="meal-list-img">
@@ -44,33 +44,28 @@
       <div>
         <div class="pull-left">
           <label>Recipe Category</label><br />
-          <select 
-            class="meal-cat-list" 
-            v-model="selected.category" 
+          <select
+            class="meal-cat-list"
+            v-model="selected.category"
           >
             <option :value="0">All Recipes</option>
-            <optgroup 
-              v-for="cat in recipeCategories" 
-              :label="cat.title"
+            <option
+              v-for="c in recipeCategories"
+              :value="c.id"
             >
-              <option 
-                v-for="c in cat.child"
-                :value="c.id"
-              >
-                {{c.title}}
-              </option>
-            </optgroup>
+              {{c.title}}
+            </option>
           </select>
         </div>
         <div>
-          <input 
+          <input
             v-model="keyword"
-            type="search" 
+            type="search"
             class="pull-right"
-            style="margin-top: 28px" 
+            style="margin-top: 28px"
             placeholder="Press enter to search ..."
-            v-on:keydown.enter.prevent 
-            @input="searchProduct" 
+            v-on:keydown.enter.prevent
+            @input="searchProduct"
           />
         </div>
       </div>
@@ -78,7 +73,7 @@
       <div class="recommend-container" style="margin-top: 20px; min-height: 400px;">
         <div>
           <div><h5>Search Recipes</h5></div>
-        </div>                  
+        </div>
         <br />
         <div class="row" v-if="products.length > 0">
           <div class="col-md-3 col-sm-4" v-for="product in products">
@@ -86,7 +81,7 @@
               :products="selectedPlanRecipes"
               :product="product"
               @addProduct="addProduct"
-              @removeProduct="removeProduct" 
+              @removeProduct="removeProduct"
             />
           </div>
         </div>
@@ -144,7 +139,7 @@
     },
     mounted() {
       const products = _.clone(this.mealPlanProducts)
-      
+
       // Show only recipe product type
       this.selectedPlanRecipes = _.filter(products, (product) => {
         if(product.type === 'recipe') {
@@ -153,6 +148,29 @@
         }
         return false;
       });
+
+      axios.get(`${window.middleware_base_url}/api/meal-plan/categories/recipes`)
+        .then((res) => {
+          if(res.data.data.length > 0) {
+            var m = [];
+            res.data.data.map((cat) => {
+              if(cat.child.length > 0) {
+                cat.child.map((r) => {
+                  m.push(r);
+                });
+              }
+            });
+            // console.log(m);
+            this.recipeCategories = m;
+          }
+        });
+
+      axios.get(`${window.middleware_base_url}/api/meal-plan/recipes/search/0/0?page=${this.currentPage}`)
+        .then((res) => {
+          this.search = true;
+          this.rows = res.data.data.total;
+          this.products = res.data.data.data;
+        });
     },
     methods: {
       // Search recipe products
@@ -166,10 +184,10 @@
 
         axios.get(`${window.middleware_base_url}/api/meal-plan/recipes/search/${this.keyword}/${this.selected.category}?page=${this.currentPage}`)
           .then((res) => {
-            this.search = true
-            this.rows = res.data.data.total
-            this.products = res.data.data.data
-          })
+            this.search = true;
+            this.rows = res.data.data.total;
+            this.products = res.data.data.data;
+          });
       }, 500),
       // Fetch paginated page records
       paginateProduct(page) {
@@ -178,16 +196,16 @@
         }
 
         this.products = []
-        
+
         axios.get(`${window.middleware_base_url}/api/meal-plan/recipes/search/${this.keyword}/${this.selected.category}?page=${page}`)
           .then((res) => {
             this.rows = res.data.data.total
-            this.products = res.data.data.data
+            this.products = res.data.data.data;
           })
       },
       /**
        * Add product to chosen ingrident list
-       * 
+       *
        * @param {[type]} product [description]
        */
       addProduct(product) {
@@ -196,16 +214,26 @@
         })
 
         if(index == -1) {
-          this.selectedPlanRecipes.push(product)
+          // since we are only adding one plate of max potential
+          console.log(product);
+
+          const k = _.cloneDeep(product);
+          k.cal = parseFloat(k.cal/k.max_potential).toFixed(3);
+          k.carbs = parseFloat(k.carbs/k.max_potential).toFixed(3);
+          k.fat = parseFloat(k.fat/k.max_potential).toFixed(3);
+          k.protein = parseFloat(k.protein/k.max_potential).toFixed(3);
+          k.new_item = true;
+
+          this.selectedPlanRecipes.push(k)
         } else {
-          this.selectedPlanRecipes[index].qty += product.qty
+          this.selectedPlanRecipes[index].max_potential += product.max_potential
         }
 
         this.selectedPlanChanged = true;
       },
       /**
        * Remove selected product from chosen ingridents tab
-       * 
+       *
        * @param  {[type]} product [description]
        * @return {[type]}         [description]
        */
@@ -216,7 +244,7 @@
       },
       /**
        * Remove chosen product
-       * 
+       *
        * @param  {[type]} product [description]
        * @return {[type]}         [description]
        */
@@ -227,12 +255,12 @@
       },
       /**
        * Save selected meals to plan
-       * 
+       *
        * @return {[type]} [description]
        */
       confirm() {
         let products = this.selectedPlanRecipes
-        
+
         if(this.selectedPlanChanged) {
           const m = [...this.selectedPlanRecipes];
 
@@ -244,7 +272,7 @@
               }
             }
           });
-          
+
           this.$events.fire('addMaxPotentialItem', maxPotentialProduct)
           this.selectedPlanChanged = false;
         }
@@ -252,7 +280,7 @@
         this.$emit('confirm', products)
 
         // this.$toasted.show('Recipes are added to products');
-        
+
         $.toaster({ message : 'Meal plan updated', title : '', priority : 'success' });
       },
     }

@@ -1,52 +1,52 @@
 <template>
   <section class="list-wrapper">
     <vue-progress-bar></vue-progress-bar>
-    <button 
-      type="button" 
-      class="confirm-btn btn btn-primary btn-auto" 
+    <button
+      type="button"
+      class="confirm-btn btn btn-primary btn-auto"
       @click="confirm"
     >Confirm Ingredients</button>
     <div class="chosen-ingridents">
       <h5>Chosen Ingredients</h5>
       <div class="meal-products-lists">
           <div class="meal-product-be"
-            v-for="(product, index) in selectedPlanProducts" 
+            v-for="(product, index) in selectedPlanProducts"
             :key="index"
           >
             <div :key="componentKey">
-              <button 
-                class="delete-product" 
-                type="button" 
+              <button
+                class="delete-product"
+                type="button"
                 @click="removeChosenProduct(product)"
               >
                 x
               </button>
-              <label 
-                class="qty-product" 
+              <label
+                class="qty-product"
                 for="quantity"
               >
                 {{product.qty}}
               </label>
-              
+
               <div class="image-buttons">
                 <div class="meal-list-img">
                   <img v-if="product.image" :src="baseUrl + product.image" alt="no img" />
                   <img v-if="!product.image" :src="baseUrl + defaultImg" alt="no img" />
                 </div>
                 <div class="meal-image-wrap">
-                  <button 
-                    class="product-delete" 
+                  <button
+                    class="product-delete"
                     type="button"
                     @click="minusIngrident(index, product)"
                   >-</button>
-                  <input 
-                    type="text" 
-                    class="product-input-qty" 
-                    :value="product.qty" 
+                  <input
+                    type="text"
+                    class="product-input-qty"
+                    :value="product.qty"
                     disabled
                   />
-                  <button 
-                    class="product-add" 
+                  <button
+                    class="product-add"
                     type="button"
                     @click="addIngrident(index, product)"
                   >
@@ -65,33 +65,28 @@
       <div>
         <div class="pull-left product-cat-dropdown">
           <label>Product Category</label><br />
-          <select 
-            class="meal-cat-list" 
-            v-model="selected.category" 
+          <select
+            class="meal-cat-list"
+            v-model="selected.category"
           >
             <option :value="0">All Products</option>
-            <optgroup 
-              v-for="cat in productCategories" 
-              :label="cat.title"
+            <option
+              v-for="c in productCategories"
+              :value="c.id"
             >
-              <option 
-                v-for="c in cat.child"
-                :value="c.id"
-              >
-                {{c.title}}
-              </option>
-            </optgroup>
+              {{c.title}}
+            </option>
           </select>
         </div>
         <div>
-          <input 
+          <input
             v-model="keyword"
-            type="search" 
+            type="search"
             class="pull-right"
-            style="margin-top: 28px" 
+            style="margin-top: 28px"
             placeholder="Press enter to search ..."
-            v-on:keydown.enter.prevent 
-            @input="searchProduct" 
+            v-on:keydown.enter.prevent
+            @input="searchProduct"
           />
         </div>
       </div>
@@ -102,7 +97,7 @@
           <center>
             <h4 v-if="search === true && products.length <= 0">No Products Found</h4>
           </center>
-        </div>                  
+        </div>
         <br />
         <div class="row" v-if="products.length > 0">
           <div class="col-lg-3 col-sm-4" v-for="product in products">
@@ -110,7 +105,7 @@
               :products="selectedPlanProducts"
               :product="product"
               @addProduct="addProduct"
-              @removeProduct="removeProduct" 
+              @removeProduct="removeProduct"
               @qtyChange="updateSelectedProduct"
             />
           </div>
@@ -171,8 +166,8 @@
     mounted() {
       // create copy of products prop
       const products = _.clone(this.mealPlanProducts)
-      
-      // Show only family product 
+
+      // Show only family product
       this.selectedPlanProducts = products.filter((product) => {
         return product.type === 'product'
       })
@@ -180,7 +175,25 @@
       // Collections/categories
       axios.get(`${window.middleware_base_url}/api/meal-plan/categories/all`)
         .then((res) => {
-          this.productCategories = res.data.data
+          if(res.data.data.length > 0) {
+            var m = [];
+            res.data.data.map((cat) => {
+              if(cat.child.length > 0) {
+                cat.child.map((r) => {
+                  m.push(r);
+                });
+              }
+            });
+            // console.log(m);
+            this.productCategories = m;
+          }
+        })
+
+      axios.get(`${window.middleware_base_url}/api/meal-plan/family-product/search/0/0?page=${this.currentPage}`)
+        .then((res) => {
+          this.rows = res.data.data.total
+          this.products = res.data.data.data
+          this.$Progress.finish()
         })
     },
     methods: {
@@ -207,7 +220,7 @@
         }
 
         this.products = []
-        
+
         axios.get(`${window.middleware_base_url}/api/meal-plan/family-product/search/${this.keyword}/${this.selected.category}?page=${page}`)
           .then((res) => {
             this.products = res.data.data.data
@@ -215,7 +228,7 @@
       },
       /**
        * Add product to chosen ingrident list
-       * 
+       *
        * @param {[type]} product [description]
        */
       addProduct(product) {
@@ -233,7 +246,7 @@
       },
       /**
        * Remove selected product from chosen ingridents tab
-       * 
+       *
        * @param  {[type]} product [description]
        * @return {[type]}         [description]
        */
@@ -244,14 +257,14 @@
       /**
        * Method is triggered when searched product qty is updated
        * from <selected-product @qtyChange /> event
-       * 
+       *
        * @param  {[type]} product [description]
        * @param  {[type]} qty     [description]
        * @return {[type]}         [description]
        */
       updateSelectedProduct(product, qty) {
         let index = _.findIndex(this.selectedPlanProducts, product)
-        
+
         if(index != -1) {
           this.selectedPlanProducts[index].qty = qty
           this.componentKey += 1
@@ -267,7 +280,7 @@
         if(this.selectedPlanProducts[i].qty <= 1) {
           return
         }
-        
+
         this.selectedPlanProducts[i].qty -= 1
         this.componentKey += 1
 
@@ -288,16 +301,16 @@
       },
       /**
        * Save selected meals to plan
-       * 
+       *
        * @return {[type]} [description]
        */
       confirm() {
         let products = this.selectedPlanProducts
 
         this.$emit('confirm', products)
-        
+
         // this.$toasted.show('Products are added to products');
-        
+
         $.toaster({ message : 'Meal plan updated', title : '', priority : 'success' });
       },
     }
