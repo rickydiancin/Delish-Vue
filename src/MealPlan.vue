@@ -257,6 +257,7 @@
 			Modal,
 			InlineSvg,
 		},
+		name: 'seasonal-box',
 		data() {
 			return {
 				partialCopy: false,

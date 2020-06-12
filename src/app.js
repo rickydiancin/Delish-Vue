@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import MealPlan from './MealPlan.vue';
+import SeasonalBox from './SeasonalBox.vue';
 import VueLodash from 'vue-lodash';
 import VueEvents from 'vue-events'
 import Toasted from 'vue-toasted';
@@ -39,4 +40,17 @@ if(document.getElementById('mea-plan-app')) {
 		render: h => h(MealPlan),
 	});
 	console.log('app loaded...');
+}
+
+
+if(document.getElementById('seasonal-box')) {
+	new Vue({
+		el: "#seasonal-box",
+		components: {
+			SeasonalBox
+		},
+		data: {
+			products: custom_products
+		},
+	});
 }
