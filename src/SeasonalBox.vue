@@ -3,7 +3,7 @@
 		<slot></slot>
 		<div class="sb-item" v-for="product in products">
 			<div class="row">
-				<div class="col-sm-2">
+				<div class="col-md-2 col-sm-6 col-5">
 					<ul class="feature-icon">
 						<li v-for="tag in product.tags">
 							<img :src="tag"/>
@@ -13,13 +13,15 @@
 						<img :src="product.image" :alt="product.title">
 					</div>
 				</div>
-				<div class="col-sm-7">
+				<div class="col-md-6  col-sm-6 col-7">
 					<h3>{{product.title}}</h3>
 				</div>
-				<div class="col-sm-3">
+				<div class="col-md-4  col-sm-12 col-12">
 					<input min="1" type="number" class="quantity" name="quantity" id="quantity" :value="product.quantity"/>
-					<a href="#" class="btn-replace btn btn-primary">Replace</a>
-					<a href="#" class="btn-replace btn btn-primary">Remove</a>
+					<div class="replace-remove">
+						<a href="#" class="btn-replace btn btn-primary">Replace</a>
+						<a href="#" class="btn-remove btn btn-border">Remove</a>
+					</div>
 				</div>
 			</div>
 		</div>
