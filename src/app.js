@@ -2,6 +2,7 @@ import Vue from 'vue';
 import MealPlan from './MealPlan.vue';
 import SeasonalBox from './SeasonalBox.vue';
 import VueLodash from 'vue-lodash';
+import lodash from 'lodash'
 import VueEvents from 'vue-events'
 import Toasted from 'vue-toasted';
 import VueProgressBar from 'vue-progressbar'
@@ -16,7 +17,7 @@ window.middleware_base_url = 'https://shopify.draftserver.com/delish-deliveries/
 window.default_image = window.middleware_base_url + 'images/placeholder-200x200.png';
 
 Vue.use(VuejsDialog);
-Vue.use(VueLodash);
+Vue.use(VueLodash, { name: 'custom' , lodash: lodash });
 Vue.use(BootstrapVue)
 Vue.use(VueEvents);
 Vue.use(Donut);
@@ -50,7 +51,9 @@ if(document.getElementById('seasonal-box')) {
 			SeasonalBox
 		},
 		data: {
-			products: custom_products
+			products: custom_products,
+			collections: collections,
+			placeholder_url: placeholder_url,
 		},
 	});
 }
