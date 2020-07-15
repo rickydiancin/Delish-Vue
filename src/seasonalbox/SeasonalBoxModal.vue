@@ -19,80 +19,79 @@
 						<div class="value-bar">
 							<strong>Seasonal Box value used</strong>
 							<div class="bar">
-								<div class="progress" style="height: 30px;" v-bind:class=" { 'progress-green-border' : true }" >
-									<div class="progress-bar"
-									v-bind:class="{ 
-										'progress-bar-danger' : (totalBoxValue > 100),
-										'progress-bar-success' : (totalBoxValue == 100),
-									}"
-									role="progressbar"
-									aria-valuemin="0"
-									aria-valuemax="100"
-									v-bind:style="{ width: totalBoxValue + '%' }"
-									></div>
-								</div>
-								<span>{{totalBoxValue}}% used</span>
+								<div class="progress" style="height: 30px;" v-bind:class="{
+									'progress-orange-border' : (totalBoxValue < 100),
+									'progress-red-border' : (totalBoxValue > 100),
+									'progress-green-border' : (totalBoxValue == 100),
+								}">
+								<div class="progress-bar"
+								role="progressbar"
+								aria-valuemin="0"
+								aria-valuemax="100"
+								v-bind:style="{ width: totalBoxValue + '%' }"
+								></div>
 							</div>
+							<span>{{totalBoxValue}}% used</span>
 						</div>
+					</div>
 
-						<form action="#" class="search-sort input-group search-bar navbar-form">
-							<div class="row">
-								<div class="col-md-3">
-									<div class="search-top-container">
-										<div class="searchbox">
-											<div class="search">
-												<input type="text" class="input-group-field input__field-2" placeholder="Search" v-model="search" @input="searchProduct">
-												<span class="input-group-btn">
-													<button type="submit" class="" value="Search"></button>
-												</span>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-md-5">
-									<p>Add or remove items from your box to complete your order.</p>
-								</div>
-								<div class="col-md-4 seasonal-sortby">
-									<label for="sort-by"> Sort by: </label>
-									<div class="sortby-outer">
-										<v-select 
-										id="sortby" 
-										:reduce="sort => sort.value" 
-										:searchable="false"
-										label="name"
-										v-model="sortby"
-										:options="sortbyOptions" 
-										@input="onChangeSort"></v-select>
-									</div>
-								</div>
-							</div>
-						</form>
-
+					<form action="#" class="search-sort input-group search-bar navbar-form">
 						<div class="row">
 							<div class="col-md-3">
-								<div class="to-be-replaced">
-									<h2>Items to be replaced</h2>
-									<ul>
-										<li v-for="product in removed">
-											<product :data="product"></product>
-										</li>
-									</ul>
-								</div>
-							</div>
-							<div class="col-md-9">
-								<div class="replace-options">
-									<h2>Replacement options</h2>
-									<div class="row">
-										<div class="col-sm-4" v-for="product in searchProducts.data">
-											<product 
-											:data="product" 
-											:added="addedProducts" 
-											@on-add-to-cart="addProductToSeasonalBox"
-											@on-remove-item="removeProductFromBox"></product>
+								<div class="search-top-container">
+									<div class="searchbox">
+										<div class="search">
+											<input type="text" class="input-group-field input__field-2" placeholder="Search" v-model="search" @input="searchProduct">
+											<span class="input-group-btn">
+												<button type="submit" class="" value="Search"></button>
+											</span>
 										</div>
 									</div>
-									<button type="button" class="btn btn-primary" v-if="hasLoadMore" @click="loadMoreProducts">Load More</button>
 								</div>
+							</div>
+							<div class="col-md-5">
+								<p>Add or remove items from your box to complete your order.</p>
+							</div>
+							<div class="col-md-4 seasonal-sortby">
+								<label for="sort-by"> Sort by: </label>
+								<div class="sortby-outer">
+									<v-select 
+									id="sortby" 
+									:reduce="sort => sort.value" 
+									:searchable="false"
+									label="name"
+									v-model="sortby"
+									:options="sortbyOptions" 
+									@input="onChangeSort"></v-select>
+								</div>
+							</div>
+						</div>
+					</form>
+
+					<div class="row">
+						<div class="col-md-3">
+							<div class="to-be-replaced">
+								<h2>Items to be replaced</h2>
+								<ul>
+									<li v-for="product in removed">
+										<product :data="product"></product>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<div class="col-md-9">
+							<div class="replace-options">
+								<h2>Replacement options</h2>
+								<div class="row">
+									<div class="col-sm-4" v-for="product in searchProducts.data">
+										<product 
+										:data="product" 
+										:added="addedProducts" 
+										@on-add-to-cart="addProductToSeasonalBox"
+										@on-remove-item="removeProductFromBox"></product>
+									</div>
+								</div>
+								<button type="button" class="btn btn-primary" v-if="hasLoadMore" @click="loadMoreProducts">Load More</button>
 							</div>
 						</div>
 					</div>
@@ -100,6 +99,7 @@
 			</div>
 		</div>
 	</div>
+</div>
 </template>
 <script>
 	import axios from 'axios'

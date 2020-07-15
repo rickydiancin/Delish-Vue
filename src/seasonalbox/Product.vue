@@ -10,9 +10,8 @@
 				<div class="grid-view-item">
 					<div class="product-wrapper">
 						<div class="grid-view-item__image-wrapper product-card__image-wrapper js">
-							<div> 
-								<img :src="data.image" :alt="data.title">
-							</div>
+							<img :src="data.image" :alt="data.title">
+							<!-- <div></div> -->
 						</div>
 						<div class="grid-view-item__link grid-view-item__image-container full-width-link">
 							<h3 class="product-title">{{data.title}}</h3>
@@ -23,14 +22,16 @@
 		</a>
 		<div class="grid-add-to-cart">
 			<form method="post" action="/cart/add" class="ajax-form" @submit="onSubmit">
-				<div class="nice-number">
-					<button type="button" @click="onDecrement">-</button>
-					<input v-model="data.quantity" min="1" type="number" class="quantity" name="quantity">
-					<button type="button" @click="onIncrement">+</button>
+				<div class="nice-wrap">
+					<div class="nice-number">
+						<button type="button" @click="onDecrement">-</button>
+						<input v-model="data.quantity" min="1" type="number" class="quantity" name="quantity">
+						<button type="button" @click="onIncrement">+</button>
+					</div>
 				</div>
-				<input class="btn btn-transparent add-to-cart-btn" disabled name="add" type="submit" value="+ Added" v-if="isAddedToList">
-				<input class="btn btn-transparent add-to-cart-btn" name="add" type="submit" value="+ Add" v-else>
-				<button class="btn btn-transparent" @click="removeProduct" v-if="isAddedToList">Remove</button>
+				<!--<input class="btn btn-transparent add-to-cart-btn" disabled name="add" type="submit" value="+ Added" v-if="isAddedToList">-->
+				<input class="btn btn-transparent add-to-cart-btn" name="add" type="submit" value="+ Add" v-if="!isAddedToList">
+				<button class="btn btn-transparent add-to-cart-btn" @click="removeProduct" v-if="isAddedToList">Remove</button>
 			</form> 
 		</div>
 	</div>
