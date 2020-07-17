@@ -1,5 +1,5 @@
 <template>
-	<div class="card-hover product-items">
+	<div class="card-hover product-items" v-bind:class="{added: isAddedToList}">
 		<a href="#" class="item-wrapper">
 			<div class="family-product-card general-card-bg ">
 				<div class="product-icon-wrapper">
@@ -11,7 +11,6 @@
 					<div class="product-wrapper">
 						<div class="grid-view-item__image-wrapper product-card__image-wrapper js">
 							<img :src="data.image" :alt="data.title">
-							<!-- <div></div> -->
 						</div>
 						<div class="grid-view-item__link grid-view-item__image-container full-width-link">
 							<h3 class="product-title">{{data.title}}</h3>
@@ -31,7 +30,7 @@
 				</div>
 				<!--<input class="btn btn-transparent add-to-cart-btn" disabled name="add" type="submit" value="+ Added" v-if="isAddedToList">-->
 				<input class="btn btn-transparent add-to-cart-btn" name="add" type="submit" value="+ Add" v-if="!isAddedToList">
-				<button class="btn btn-transparent add-to-cart-btn" @click="removeProduct" v-if="isAddedToList">Remove</button>
+				<button class="btn btn-transparent add-to-cart-btn" @click="removeProduct" v-else>Remove</button>
 			</form> 
 		</div>
 	</div>
@@ -83,7 +82,6 @@
 			{
 				e.preventDefault();
 				this.$emit('on-add-to-cart', this.data)
-				console.log(this.data);
 			}
 		}
 	}

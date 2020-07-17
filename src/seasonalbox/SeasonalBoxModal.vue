@@ -20,18 +20,18 @@
 							<strong>Seasonal Box value used</strong>
 							<div class="bar">
 								<div class="progress" style="height: 30px;" v-bind:class="{
-									'progress-orange-border' : (totalBoxValue < 100),
-									'progress-red-border' : (totalBoxValue > 100),
-									'progress-green-border' : (totalBoxValue == 100),
+									'progress-orange-border' : (totalBoxPercentage < 100),
+									'progress-red-border' : (totalBoxPercentage > 100),
+									'progress-green-border' : (totalBoxPercentage == 100),
 								}">
 								<div class="progress-bar"
 								role="progressbar"
 								aria-valuemin="0"
 								aria-valuemax="100"
-								v-bind:style="{ width: totalBoxValue + '%' }"
+								v-bind:style="{ width: totalBoxPercentage + '%' }"
 								></div>
 							</div>
-							<span>{{totalBoxValue}}% used</span>
+							<span>{{totalBoxPercentage}}% used</span>
 						</div>
 					</div>
 
@@ -74,7 +74,12 @@
 								<h2>Items to be replaced</h2>
 								<ul>
 									<li v-for="product in removed">
-										<product :data="product"></product>
+										<product 
+										:data="product"
+										:added="addedProducts" 
+										@on-add-to-cart="addProductToSeasonalBox"
+										@on-remove-item="removeProductFromBox(product,'replace')"
+										></product>
 									</li>
 								</ul>
 							</div>
@@ -85,7 +90,7 @@
 								<div class="row">
 									<div class="col-sm-4" v-for="product in searchProducts.data">
 										<product 
-										:data="product" 
+										:data="product"
 										:added="addedProducts" 
 										@on-add-to-cart="addProductToSeasonalBox"
 										@on-remove-item="removeProductFromBox"></product>
@@ -172,26 +177,43 @@
 			this.getProducts();
 		},
 		computed: {
-			hasLoadMore: function(){
+			hasLoadMore: function()
+			{
 				return (this.searchProducts.data.length > 0 && this.searchProducts.current_page !== this.searchProducts.last_page);
 			},
 			totalBoxValue: function()
 			{
 				let products = _.union(this.addedProducts, _.differenceBy(this.products, this.removed, 'id'));
-				let total = _.sumBy(products, p => p.price * p.quantity);
-
-				return ( ( total * 100 * 100)/ this.price ).toFixed(2); 
+				return _.sumBy(products, p => p.price * p.quantity);
+			},
+			totalBoxPercentage: function()
+			{
+				return ( ( this.totalBoxValue * 100 * 100)/ this.price ).toFixed(2); 
 			}
 		},
 		methods: {
 			completeBox: function(e)
 			{
 				e.preventDefault();
-				this.$emit('add-item',this.addedProducts);
+				if(this.totalBoxPercentage > 100) {
+					this.$toasted.show('Your box value exceed 100%. Please remove items or reduce quantity to complete box.', {theme: 'bubble', });
+				} else if(this.totalBoxPercentage < 90) {
+					this.$toasted.show('Your box value must be minimum of 90%. Please add more item or increase quantity to complete box.', {theme: 'bubble', });
+				} else {
+					this.$emit('add-item',this.addedProducts);
+					this.$emit('closeModal');
+				}
 			},
-			removeProductFromBox: function(product)
+			removeProductFromBox: function(product,type = 'default')
 			{
-				product.quantity = 0;
+				let qty = 0;
+				if(type === 'replace') {
+					let item = _.find(this.products, { 'id': product.id });
+					if(item){
+						qty = item.quantity;
+					}
+				}
+				product.quantity = qty;
 				this.addedProducts = _.filter(this.addedProducts, p => p.id !== product.id);
 			},
 			addProductToSeasonalBox: function(product)
@@ -203,6 +225,17 @@
 					this.addedProducts[index] = product;
 				}
 			},
+			// addProductBackToList: function(product)
+			// {
+			// 	let total = this.totalBoxValue + (product.price * product.quantity);
+			// 	let percentage = ( ( total * 100 * 100)/ this.price ).toFixed(2); 
+			// 	if(percentage > 100 ){
+			// 		this.$toasted.show('It will exceed the 100% of seasonal box. Please reduce the quantity.', {theme: 'bubble', });
+			// 	} else {
+			// 		this.$emit('on-add-back-product',product);
+			// 	}
+
+			// },
 			toggleBodyClass: function(addRemoveClass, className) {
 				const el = document.body;
 				if (addRemoveClass === 'addClass') {
