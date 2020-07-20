@@ -184,7 +184,7 @@
 			totalBoxValue: function()
 			{
 				let products = _.union(this.addedProducts, _.differenceBy(this.products, this.removed, 'id'));
-				return _.sumBy(products, p => p.price * p.quantity);
+				return _.sumBy(products, p => p.price * p.qty);
 			},
 			totalBoxPercentage: function()
 			{
@@ -210,10 +210,10 @@
 				if(type === 'replace') {
 					let item = _.find(this.products, { 'id': product.id });
 					if(item){
-						qty = item.quantity;
+						qty = item.qty;
 					}
 				}
-				product.quantity = qty;
+				product.qty = qty;
 				this.addedProducts = _.filter(this.addedProducts, p => p.id !== product.id);
 			},
 			addProductToSeasonalBox: function(product)
@@ -273,7 +273,8 @@
 				return _.map(arr, function(item) {
 					return { 
 						id: item.product_id.replace('gid://shopify/Product/', ''),
-						quantity: 0,
+						handle: item.product_handle,
+						qty: 0,
 						price: item.price,
 						image: item.fullImageUrl !== null ? item.fullImageUrl : $this.placeholderUrl,
 						tags: [],

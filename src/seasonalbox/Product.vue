@@ -24,7 +24,7 @@
 				<div class="nice-wrap">
 					<div class="nice-number">
 						<button type="button" @click="onDecrement">-</button>
-						<input v-model="data.quantity" min="1" type="number" class="quantity" name="quantity">
+						<input v-model="data.qty" min="1" type="number" class="quantity" name="quantity">
 						<button type="button" @click="onIncrement">+</button>
 					</div>
 				</div>
@@ -57,7 +57,7 @@
 			{
 				let index = _.findIndex(this.added, { 'id': this.data.id });
 				if(index !== -1) {
-					this.data.quantity = this.added[index].quantity;
+					this.data.qty = this.added[index].qty;
 					return true;
 				}
 				return false;
@@ -66,13 +66,13 @@
 		methods: {
 			onDecrement: function(e)
 			{
-				if(this.data.quantity > 1){	
-					this.data.quantity = --this.data.quantity;
+				if(this.data.qty > 1){	
+					this.data.qty = --this.data.qty;
 				}
 			},
 			onIncrement: function(e)
 			{
-				this.data.quantity = ++this.data.quantity;
+				this.data.qty = ++this.data.qty;
 			},
 			removeProduct: function(e)
 			{
