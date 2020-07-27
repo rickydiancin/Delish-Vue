@@ -16,12 +16,23 @@
 						</div>
 						<div>
 							<div class="diy-mp-right">
-								Total: <span>${{mealPrice}} AUD</span>
+								<div class="meal-plan-total-pricing">
+									Total: <span>${{mealPrice}} AUD</span>
+								</div>
 								<label class="meal-plan-purchase-btn btn btn-yellow btn-large">
 									<button type="button" @click="purchaseMealPlan">Purchase Meal Plan</button>
 								</label>
 							</div>
 						</div>
+					</div>
+				</div>
+
+				<div class="visible-xs">
+					<div class="phone-orientation">
+						<span></span>
+						<p class="phone-orientation-content">
+							To use our daily planner easily we suggest turning your phone on its side.
+						</p>
 					</div>
 				</div>
 				<!-- <div class="row">
