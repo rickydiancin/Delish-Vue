@@ -25,7 +25,7 @@ module.exports = {
 	resolve: { alias: { vue: 'vue/dist/vue.esm.js' } },
 	watch: true,
 	output: {
-		path: __dirname + "/../new-design/assets",
+		path: __dirname + "/../delish-shopify/assets",
 		filename: "meal-plan-vue.js"
 	}
 };

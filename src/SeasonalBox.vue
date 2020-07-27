@@ -135,15 +135,22 @@
 			},
 			onAddToCart: function(e){
 				e.preventDefault();
-				if(this.totalBoxPercentage < 90 || this.totalBoxPercentage > 100 ){
 
-					//jquery
-					$.toaster({
-						message : 'Your box value must be minimum of 90%. Please add more item or increase quantity to complete box.',
-						title : '',
-						priority : 'danger'
-					});
-					return false;
+				console.log(this.newProducts.length !== 0);
+				console.log(this.removed.length !== 0);
+				console.log(_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)));
+
+				if(this.totalBoxPercentage < 90 || this.totalBoxPercentage > 100 ){
+					if(!_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)) || this.newProducts.length !== 0 || this.removed.length !== 0 ) {
+
+						//jquery
+						$.toaster({
+							message : 'Your box value must be minimum of 90% and should not exceed 100%. Please review your seasonal box.',
+							title : '',
+							priority : 'danger'
+						});
+						return false;
+					} 	
 				}
 
 				let ingredients = [];
