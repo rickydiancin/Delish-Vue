@@ -1,52 +1,62 @@
 <template>
 	<section v-if="plan != null" class="meal-plan-wrapper" style="margin-top: 5px; margin-left: 10px; margin-right: 10px;">
-		<div class="meal-plan-container" style="margin-left: 60px; margin-right: 60px;">
+		<div>
 			<div class="row">
-				<div class="col-lg-4 col-md-12">
-					<h2>DIY meal plan</h2>
-				</div>
-				<div class="col-lg-8 col-md-12">
-					<div class="diy-mp-right">
-						<span>Name of Meal Plans</span>
+				<div class="col-lg-3 col-md-3 mobile-meal-name">
+					<div class="meal-plan-name">
+						<p>Name of meal plans</p>
 						<input type="text" v-model="mealPlanName" />
-						<label class="meal-plan-purchase-btn btn btn-yellow btn-large">
-							<button type="button" @click="purchaseMealPlan">Purchase Meal Plan</button>
-							<span>${{mealPrice}} AUD</span>
-						</label>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12">
-					<div class="meal-plan-maximize-container">
-						<div class="meal-plan-maximize-wrapper">
-							<h3>Maximise my value</h3>
-							<label>You have ingridents in your recipes that may go to waste. <span>Drop and Drag</span> in more servings to get maximum value.</label>
-							<div :key="maxRecipeKey">
-								<draggable
-									id="max-potential-contain"
-									v-model="maxPotentialItems"
-									:group="{name: 'people', pull: 'clone'}"
-									@start="drag=true"
-									@remove="onMaximizeRecipeDropEnd"
-									class="maximize-draggable-zone"
-								>
-									<div
-										class="btn-drag-yellow btn-drag"
-										v-for="(product, index) in maxPotentialItems"
-										:key="index"
-										:id="product.id"
-										style="margin-right: 10px;"
-									>
-										{{product.title}} <span v-if="product.max_potential"> x {{ parseInt(product.remain_max_potential)}}</span>
-									</div>
-								</draggable>
+
+				<div class="col-lg-9 col-md-9 mobile-meal-plan">
+					<div class="meal-plan-container">
+						<div>
+							<h2>DIY Mealplan</h2>
+						</div>
+						<div>
+							<div class="diy-mp-right">
+								Total: <span>${{mealPrice}} AUD</span>
+								<label class="meal-plan-purchase-btn btn btn-yellow btn-large">
+									<button type="button" @click="purchaseMealPlan">Purchase Meal Plan</button>
+								</label>
 							</div>
 						</div>
 					</div>
 				</div>
+				<!-- <div class="row">
+					<div class="col-md-12">
+						<div class="meal-plan-maximize-container">
+							<div class="meal-plan-maximize-wrapper">
+								<h3>Maximise my value</h3>
+								<label>You have ingridents in your recipes that may go to waste. <span>Drop and Drag</span> in more servings to get maximum value.</label>
+								<div :key="maxRecipeKey">
+									<draggable
+										id="max-potential-contain"
+										v-model="maxPotentialItems"
+										:group="{name: 'people', pull: 'clone'}"
+										@start="drag=true"
+										@remove="onMaximizeRecipeDropEnd"
+										class="maximize-draggable-zone"
+									>
+										<div
+											class="btn-drag-yellow btn-drag"
+											v-for="(product, index) in maxPotentialItems"
+											:key="index"
+											:id="product.id"
+											style="margin-right: 10px;"
+										>
+											{{product.title}} <span v-if="product.max_potential"> x {{ parseInt(product.remain_max_potential)}}</span>
+										</div>
+									</draggable>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div> -->
 			</div>
 		</div>
+
 		<table border="1" class="meal-plan-table">
 			<tr>
 				<td></td>
@@ -55,7 +65,7 @@
 					@click="onDaySelect(day)"
 					:class="[checkIfDayIsSelected(day),{'inactive':!isInactiveColumn.columns[day]}]"
 				>
-					<h4 class="meal-day-tag">Day {{day}}</h4>
+					<h4 class="meal-day-tag">Day 0{{day}}</h4>
 					<span class="pull-right trash-and-clone">
 						<button
 							class="btn-meal-action btn-meal-delete"
@@ -80,7 +90,7 @@
 					<br />
 					<div class="span">{{ (totalPrice[day].cal_p).toFixed(2) }}% of target calories</div>
 					<div class="progress" style="height: 6px;" v-bind:class=" { 'progress-green-border' : ((totalPrice[day].cal_p > 0) && (totalPrice[day].cal_p < 100)) }" >
-						<div class="progress-bar progress-bar-success"
+						<div class="progress-bar progress-bar-success orange"
 							v-bind:class=" { 'progress-bar-danger' : (totalPrice[day].cal_p > 100) }"
 							role="progressbar"
 							aria-valuemin="0"
@@ -128,17 +138,19 @@
 						v-if="mealName == 'dinner'"
 					></inline-svg>
 
-					<label :class="'meal-for-day ' + 'meal-' + mealName">{{ mealTable.meal[mealName].name }}</label>
-					<button type="button" @click="expandMeal(mealName)">
-						<span
-							class="cs-font clever-icon-arrow-left arrow-icon"
-							v-if="mealTable.meal[mealName].hide === true"
-						></span>
-						<span
-							class="cs-font clever-icon-arrow-right arrow-icon"
-							v-if="mealTable.meal[mealName].hide === false"
-						></span>
-					</button>
+					<div class="meal-plan-toggle">
+						<label :class="'meal-for-day ' + 'meal-' + mealName">{{ mealTable.meal[mealName].name }}</label>
+						<button type="button" @click="expandMeal(mealName)">
+							<span
+								class="cs-font clever-icon-arrow-left arrow-icon"
+								v-if="mealTable.meal[mealName].hide === true"
+							></span>
+							<span
+								class="cs-font clever-icon-arrow-right arrow-icon"
+								v-if="mealTable.meal[mealName].hide === false"
+							></span>
+						</button>
+					</div>
 				</td>
 				<td
 					v-for="(products, day) in meal"
@@ -146,6 +158,13 @@
 					:class="[checkIfDayIsSelected(day), { open : mealTable.meal[mealName].hide }]"
 				>
 					<div v-if="mealTable.meal[mealName].hide">
+						<label>{{ mealTable.meal[mealName].name }}</label>
+						<ul class="meal-day-nutrient">
+							<li>{{ test(products, 'cal') }}g CAL</li>
+							<li>{{ test(products, 'fat') }}g FAT</li>
+							<li>{{ test(products, 'protein') }}g Protein</li>
+							<li>{{ test(products, 'carbs') }}g Carbs</li>
+						</ul>
 						<draggable
 							v-model="plan[mealName][day]"
 							:group="{name: 'people'}"
@@ -166,7 +185,7 @@
 						v-if="products.length > 0"
 						type="button"
 						@click="copyMealPlan(day, mealName)"
-						class="btn-meal-day-action"
+						class="btn-meal-day-action copy-meal-plan"
 					>+ copy plan to another day</button>
 					<button
 						v-if="products.length > 0"
@@ -177,7 +196,7 @@
 					<button
 						v-if="products.length <= 0"
 						type="button"
-						class="btn-drag"
+						class="btn-drag-button"
 						@click="openModal(plan[mealName][day], mealName, day)"
 					>Add a recipes/products</button>
 				</td>
@@ -186,7 +205,7 @@
 				<td></td>
 				<td v-for="day in 7">
 					<div class="chart">
-						<vc-donut
+						<!-- <vc-donut
 						:sections="chart[day]"
 						background="white"
 						foreground="grey"
@@ -197,8 +216,9 @@
 						legend-placement="bottom"
 						:total="101"
 						:start-angle="0"
-						>
-						Day {{day}}<br> Macro Graph
+						> -->
+						<chart :range="totalPrice[day]"></chart>
+						<!-- Day {{day}}<br> Macro Graph -->
 					</vc-donut>
 				</div>
 				<div class="chart-details">
@@ -236,10 +256,12 @@
 			@closeModal="closeCopyMealPlan"
 		/>
 	</section>
+
 </template>
 
 <script>
 	import CopyMealPlan from './components/CopyMealPlan.vue';
+	import Chart from './components/Chart.vue';
 	import draggable from 'vuedraggable';
 	import Modal from './components/SearchProductModal.vue';
 	import axios from 'axios';
@@ -256,8 +278,9 @@
 			CopyMealPlan,
 			Modal,
 			InlineSvg,
+			Chart,
 		},
-		name: 'seasonal-box',
+		name: 'MealPlan',
 		data() {
 			return {
 				partialCopy: false,
@@ -500,8 +523,14 @@
 			});
 		},
 		methods: {
-			getTotalMealPrice() {
-				return _.reduce(this.totalPrice, function(sum, item) {return sum + item.price; }, 0).toFixed(2);
+			test(a, c) {
+				let m = 0;
+
+				Object.values(a).forEach((b) => {
+					m += b[c];
+				});
+
+				return m.toFixed(2);
 			},
 			onDaySelect(day) {
 				this.dayActive = _.map(this.dayActive, (row) => {
