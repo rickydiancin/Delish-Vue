@@ -136,9 +136,9 @@
 			onAddToCart: function(e){
 				e.preventDefault();
 
-				console.log(this.newProducts.length !== 0);
-				console.log(this.removed.length !== 0);
-				console.log(_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)));
+				// console.log(this.newProducts.length !== 0);
+				// console.log(this.removed.length !== 0);
+				// console.log(_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)));
 
 				if(this.totalBoxPercentage < 90 || this.totalBoxPercentage > 100 ){
 					if(!_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)) || this.newProducts.length !== 0 || this.removed.length !== 0 ) {
@@ -200,20 +200,37 @@
 			addNewItem: function(products){
 				_.forEach(products, (product)=>{
 					let index = _.findIndex(this.items, { 'id': product.id });
-					let i = _.findIndex(this.newProducts, { 'id': product.id });
+					let newItemIndex = _.findIndex(this.newProducts, { 'id': product.id });
+					let removedIndex = _.findIndex(this.removed, { 'id': product.id });
 
-					if(index === -1 && i === -1){
+					//Completely new item added to box
+					if(index === -1 && newItemIndex === -1){
 						this.newProducts.push(product);
 					}
-
-					if(index !== -1){
-						this.removed = _.filter(this.removed,  p => p.id !== product.id);
-						this.items[index] = product;
+					
+					//Item already exist in the box but again added from the popup
+					else if(removedIndex === -1 && newItemIndex === -1 && index !== -1){
+						this.items[index].qty = product.qty + this.items[index].qty;
+					} 
+					
+					else if(removedIndex === -1 && newItemIndex !== -1 && index === -1){
+						this.items[index].qty = product.qty + this.newProducts[index].qty;
+					} 
+					
+					//Has in the existing item list 
+					else if(index !== -1){
+						// this.removed = _.filter(this.removed,  p => p.id !== product.id);
+						this.items[index].qty = product.qty;
 					}
 
-					if(i !== -1){
+					//Has in the new products list
+					else if(newItemIndex !== -1){
+						// this.removed = _.filter(this.removed,  p => p.id !== product.id);
+						this.newProducts[newItemIndex].qty = product.qty;
+					}
+
+					if(index !== -1 || newItemIndex !== -1){
 						this.removed = _.filter(this.removed,  p => p.id !== product.id);
-						this.newProducts[i] = product;
 					}
 				});
 
