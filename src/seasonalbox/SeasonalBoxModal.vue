@@ -201,7 +201,7 @@
 					this.$toasted.show('Your box value must be minimum of 90%. Please add more item or increase quantity to complete box.', {theme: 'bubble', });
 				} else {
 					this.$emit('add-item',this.addedProducts);
-					this.$emit('closeModal');
+					this.$emit('closeModal', 1);
 				}
 			},
 			removeProductFromBox: function(product,type = 'default')
@@ -215,6 +215,7 @@
 				}
 				product.qty = qty;
 				this.addedProducts = _.filter(this.addedProducts, p => p.id !== product.id);
+				$("#exampleModal").animate({ scrollTop: 0 }, "slow");
 			},
 			addProductToSeasonalBox: function(product)
 			{
@@ -224,6 +225,7 @@
 				} else {
 					this.addedProducts[index] = product;
 				}
+				$("#exampleModal").animate({ scrollTop: 0 }, "slow");
 			},
 			// addProductBackToList: function(product)
 			// {

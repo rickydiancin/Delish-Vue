@@ -68,11 +68,17 @@
 			{
 				if(this.data.qty > 1){	
 					this.data.qty = --this.data.qty;
+					if(this.isAddedToList) {
+						$("#exampleModal").animate({ scrollTop: 0 }, "slow");
+					}
 				}
 			},
 			onIncrement: function(e)
 			{
 				this.data.qty = ++this.data.qty;
+				if(this.isAddedToList) {
+					$("#exampleModal").animate({ scrollTop: 0 }, "slow");
+				}
 			},
 			removeProduct: function(e)
 			{

@@ -25,8 +25,10 @@
 						</div>
 						<div class="replace-remove" v-if="customizable">
 							<!-- <a v-if="isAddBackable(product)" href="#" class="btn-replace btn btn-primary" @click="onaAddBack(product,$event)">Add back</a> -->
-							<a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="onRemoved" disabled>Removed</a>
-							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Replace</a>
+							<!-- <a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="onRemoved" disabled>Removed</a>
+							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Replace</a> -->
+							<a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="removeItemBack(product,$event)">Deselect</a>
+							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Select</a>
 						</div>
 					</div>
 				</div>
@@ -34,7 +36,7 @@
 		</div>
 		<div class="replace-selected-wrapper">
 			<button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button>
-			<a href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
+			<a href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to carts</a>
 		</div>
 		<div v-if="modal">
 			<SeasonalBoxModal
@@ -179,6 +181,8 @@
 
 				let formdata = this.toFormData(data);
 
+				console.log(data)
+
 				axios.post('/cart/add.js',formdata)
 				.then((res) => {
 					$.toaster({ 
@@ -190,7 +194,9 @@
 
 					Shopify.getCart(e=>{
 						//jquery
-						$('.cart-count-info').text(e.item_count);
+						// console.log(e)
+						$('.cart-count-info').text(e.items.length);
+						// $('.cart-count-info').text(e.item_count);
 					});
 				}).catch((err)=>{
 					this.$toasted.error('Something went wrong. Please try again.');
@@ -198,6 +204,7 @@
 
 			},
 			addNewItem: function(products){
+				console.log(products,'productsproducts')
 				_.forEach(products, (product)=>{
 					let index = _.findIndex(this.items, { 'id': product.id });
 					let newItemIndex = _.findIndex(this.newProducts, { 'id': product.id });
@@ -243,11 +250,19 @@
 				if(-1 !== _.findIndex(this.removed, { 'id': product.id }))
 					this.removed = _.filter(this.removed, p => p.id !== product.id);
 			},
+			removeItemBack: function(product,e)
+			{
+				e.preventDefault();
+				if(-1 !== _.findIndex(this.removed, { 'id': product.id }))
+					this.removed = _.filter(this.removed, p => p.id !== product.id);
+			},
 			removeItem: function(p,e)
 			{
 				e.preventDefault();
 				if(-1 === _.findIndex(this.removed, { 'id': p.id })){
 					this.removed.push(_.cloneDeep(p));
+					console.log(_.cloneDeep(p))
+					console.log(this.removed)
 				}
 			},
 			openPopup: function(e)
@@ -256,8 +271,13 @@
 				this.modal = true;
 				document.body.classList.add('modal-open');
 			},
-			closePopup: function()
+			closePopup: function(data)
 			{
+				if(data) {
+					console.log(data)
+					this.items = this.productList.filter(array => this.removed.some(val => val.id !== array.id));
+					console.log(this.productList , this.removed)
+				}
 				this.modal = false;
 				document.body.classList.remove('modal-open');				
 			},
