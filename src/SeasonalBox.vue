@@ -89,6 +89,7 @@
 			}
 		},
 		data() {
+			console.log(this.$route)
 			return {
 				items : this.$parent.products,
 				collections: this.$parent.collections,
@@ -109,6 +110,7 @@
 			},
 			productList: function()
 			{
+				console.log(this.newProducts)
 				return _.concat(this.items,this.newProducts);
 			},
 			totalBoxValue: function()
@@ -173,34 +175,104 @@
 
 				};
 
-				let data = {
-					'quantity': 1,
-					'id': this.variantId,
-					'properties': properties
-				};
+				// let data = {
+				// 	'quantity': 1,
+				// 	'id': this.variantId,
+				// 	'properties': properties
+				// };
 
-				let formdata = this.toFormData(data);
+				// let formdata = this.toFormData(data);
 
-				console.log(data)
+				// console.log(formdata)
+				// console.log(this.$parent.type);
 
-				axios.post('/cart/add.js',formdata)
-				.then((res) => {
-					$.toaster({ 
-						message : 'Product added to cart successfully.',
-						title : '',
-						priority : 'success' ,
-						fadeAway: 4000 
+				if(this.$parent.type == 'add') {
+
+					let data = {
+						'quantity': 1,
+						'id': this.variantId,
+						'properties': properties
+					};
+					let formdata = this.toFormData(data);
+
+					axios.post('/cart/add.js',formdata)
+					.then((res) => {
+						$.toaster({ 
+							message : 'Product added to cart successfully.',
+							title : '',
+							priority : 'success' ,
+							fadeAway: 4000 
+						});
+
+						Shopify.getCart(e=>{
+							//jquery
+							// console.log(e)
+							$('.cart-count-info').text(e.items.length);
+							// $('.cart-count-info').text(e.item_count);
+						});
+					}).catch((err)=>{
+						this.$toasted.error('Something went wrong. Please try again.');
 					});
 
-					Shopify.getCart(e=>{
-						//jquery
-						// console.log(e)
-						$('.cart-count-info').text(e.items.length);
-						// $('.cart-count-info').text(e.item_count);
+				} else {
+					console.log(this.$parent.line)
+					let data = {
+						'quantity': 1,
+						'line': this.$parent.line,
+						'properties': properties
+					};
+
+					// axios.get('/cart.js')
+					// .then((res) => {
+					// 	console.log(res)
+					// }).catch((err)=>{
+					// 	console.log(err)
+					// 	this.$toasted.error('Something went wrong. Please try again.');
+					// });
+
+					let formdata = this.toData(data);
+					axios.post('/cart/change.js',formdata)
+					.then((res) => {
+						$.toaster({ 
+							message : 'Product added to cart successfully.',
+							title : '',
+							priority : 'success' ,
+							fadeAway: 4000 
+						});
+
+						Shopify.getCart(e=>{
+							//jquery
+							// console.log(e)
+							$('.cart-count-info').text(e.items.length);
+							// $('.cart-count-info').text(e.item_count);
+						});
+					}).catch((err)=>{
+						console.log(err)
+						this.$toasted.error('Something went wrong. Please try again.');
 					});
-				}).catch((err)=>{
-					this.$toasted.error('Something went wrong. Please try again.');
-				});
+
+				}
+
+				
+
+				// axios.post('/cart/add.js',formdata)
+				// .then((res) => {
+				// 	$.toaster({ 
+				// 		message : 'Product added to cart successfully.',
+				// 		title : '',
+				// 		priority : 'success' ,
+				// 		fadeAway: 4000 
+				// 	});
+
+				// 	Shopify.getCart(e=>{
+				// 		//jquery
+				// 		// console.log(e)
+				// 		$('.cart-count-info').text(e.items.length);
+				// 		// $('.cart-count-info').text(e.item_count);
+				// 	});
+				// }).catch((err)=>{
+				// 	this.$toasted.error('Something went wrong. Please try again.');
+				// });
 
 			},
 			addNewItem: function(products){
@@ -274,9 +346,9 @@
 			closePopup: function(data)
 			{
 				if(data) {
-					console.log(data)
-					this.items = this.productList.filter(array => this.removed.some(val => val.id !== array.id));
-					console.log(this.productList , this.removed)
+					// console.log(data)
+					this.items = this.items.filter(array => this.removed.some(val => val.id !== array.id));
+					// console.log(this.productList , this.removed)
 				}
 				this.modal = false;
 				document.body.classList.remove('modal-open');				
@@ -297,6 +369,7 @@
 					if(obj.hasOwnProperty(property) && obj[property]) {
 						if (namespace) {
 							formKey = namespace + '[' + property + ']';
+							// console.log(formKey)
 						} else {
 							formKey = property;
 						}
@@ -311,6 +384,18 @@
 				}
 
 				return fd;
+			},
+			toData(obj) {
+				// let formKey;
+				var result = {};
+
+				for(let i in obj.properties.included) {
+					result[i] = obj.properties.included[i];
+				}
+
+				obj.properties.included = result;
+
+				return obj;
 			},
 		}
 	}
