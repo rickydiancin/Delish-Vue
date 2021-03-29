@@ -36,7 +36,8 @@
 		</div>
 		<div class="replace-selected-wrapper">
 			<button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button>
-			<a href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to carts</a>
+			<a v-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to carts</a>
+			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
 		</div>
 		<div v-if="modal">
 			<SeasonalBoxModal
@@ -94,6 +95,7 @@
 				items : this.$parent.products,
 				collections: this.$parent.collections,
 				placeholderUrl: this.$parent.placeholder_url,
+				status_type: this.$parent.status_type,
 				newProducts: [],
 				removed: [],
 				// originalProducts: [],
@@ -186,7 +188,7 @@
 				// console.log(formdata)
 				// console.log(this.$parent.type);
 
-				if(this.$parent.type == 'add') {
+				if(this.$parent.status_type == 'add') {
 
 					let data = {
 						'quantity': 1,
@@ -218,7 +220,7 @@
 					console.log(this.$parent.line)
 					let data = {
 						'quantity': 1,
-						'line': this.$parent.line,
+						'line': this.$parent.line+1,
 						'properties': properties
 					};
 
@@ -348,6 +350,7 @@
 				if(data) {
 					// console.log(data)
 					this.items = this.items.filter(array => this.removed.some(val => val.id !== array.id));
+					this.removed = [];
 					// console.log(this.productList , this.removed)
 				}
 				this.modal = false;
