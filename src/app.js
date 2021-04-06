@@ -13,7 +13,7 @@ import VuejsDialog from 'vuejs-dialog';
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
-window.middleware_base_url = "http://shopify.draftserver.com/delish-deliveries/public/";
+window.middleware_base_url = "https://admin-delish.test/";
 window.default_image = window.middleware_base_url + 'images/placeholder-200x200.png';
 
 Vue.use(VuejsDialog);
