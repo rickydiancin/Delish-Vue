@@ -36,7 +36,7 @@
 		</div>
 		<div class="replace-selected-wrapper">
 			<button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button>
-			<a href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to carts</a>
+			<a href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
 		</div>
 		<div v-if="modal">
 			<SeasonalBoxModal
