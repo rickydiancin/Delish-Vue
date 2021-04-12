@@ -279,7 +279,8 @@
 	import InlineSvg from 'vue-inline-svg'
 	import getParameter from 'get-parameter';
 
-	let mealplanPath = 'https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/';
+	let mealplanPath = 'https://delishdevelopment.com.au/api/meal-plan/product/info/';
+	// let mealplanPath = 'https://shopify.draftserver.com/delish-deliveries/public/api/meal-plan/product/info/';
 	let originalMealPlanName = '';
 	let originalMealPlan = {};
 
@@ -295,7 +296,8 @@
 		data() {
 			return {
 				partialCopy: false,
-				baseUrl: 'http://shopify.draftserver.com/delish-deliveries/public/api/',
+				baseUrl: 'https://delishdevelopment.com.au/api/',
+				// baseUrl: 'http://shopify.draftserver.com/delish-deliveries/public/api/',
 				maxRecipeKey: 0,
 				mealPlanName: '',
 				mealPlanId: null,
