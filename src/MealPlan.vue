@@ -279,7 +279,7 @@
 	import InlineSvg from 'vue-inline-svg'
 	import getParameter from 'get-parameter';
 
-	let mealplanPath = 'https://httadmin-delish.test/api/meal-plan/product/info/';
+	let mealplanPath = 'https://delishdevelopment.com.au/api/meal-plan/product/info/';
 	let originalMealPlanName = '';
 	let originalMealPlan = {};
 
@@ -295,7 +295,7 @@
 		data() {
 			return {
 				partialCopy: false,
-				baseUrl: 'https://admin-delish.test/api/',
+				baseUrl: 'https://delishdevelopment.com.au/api/',
 				maxRecipeKey: 0,
 				mealPlanName: '',
 				mealPlanId: null,

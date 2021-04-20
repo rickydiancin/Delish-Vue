@@ -90,7 +90,8 @@
 			}
 		},
 		data() {
-			console.log(this.$route)
+			console.log('Route', this.$route)
+console.log('Parent', this.$parent)
 			return {
 				items : this.$parent.products,
 				collections: this.$parent.collections,
