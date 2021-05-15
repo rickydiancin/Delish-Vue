@@ -43,7 +43,7 @@
 										<div class="search">
 											<input type="text" class="input-group-field input__field-2" placeholder="Search" v-model="search" @input="searchProduct">
 											<span class="input-group-btn">
-												<button type="submit" class="" value="Search"></button>
+												<button type="button" class="" value="Search"></button>
 											</span>
 										</div>
 									</div>
