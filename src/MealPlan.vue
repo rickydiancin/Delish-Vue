@@ -296,8 +296,8 @@
 		data() {
 			return {
 				partialCopy: false,
-				baseUrl: 'https://delishdevelopment.com.au/api/',
-				// baseUrl: 'http://shopify.draftserver.com/delish-deliveries/public/api/',
+				//baseUrl: 'https://delishdevelopment.com.au/api/',
+				baseUrl: 'http://shopify.draftserver.com/delish-deliveries/public/api/',
 				maxRecipeKey: 0,
 				mealPlanName: '',
 				mealPlanId: null,
