@@ -43,7 +43,7 @@
 										<div class="search">
 											<input type="text" class="input-group-field input__field-2" placeholder="Search" v-model="search" @input="searchProduct">
 											<span class="input-group-btn">
-												<button type="submit" class="" value="Search"></button>
+												<button type="button" class="" value="Search"></button>
 											</span>
 										</div>
 									</div>
@@ -278,6 +278,7 @@
 						handle: item.product_handle,
 						qty: 0,
 						price: item.price,
+						imageurl:  item.imageurl,
 						image: item.fullImageUrl !== null ? item.fullImageUrl : $this.placeholderUrl,
 						tags: [],
 						title: item.title

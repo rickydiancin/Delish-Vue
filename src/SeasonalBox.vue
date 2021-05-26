@@ -36,7 +36,8 @@
 		</div>
 		<div class="replace-selected-wrapper">
 			<button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button>
-			<a v-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
+			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
+			<a v-else-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
 			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
 		</div>
 		<div v-if="modal">
