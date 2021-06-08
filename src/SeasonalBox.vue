@@ -35,7 +35,8 @@
 			</div>
 		</div>
 		<div class="replace-selected-wrapper">
-			<button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button>
+			<a :href="'/pages/seasonal-box-customize?id='+product_id+'&handle='+product_handle"><button type="button" class="btn btn-primary replace-selected-items">Customize Your Boxes</button></a>
+			<!-- <button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button> -->
 			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
 			<a v-else-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
 			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
@@ -94,6 +95,8 @@
 			console.log('Route', this.$route)
 console.log('Parent', this.$parent)
 			return {
+				product_handle : this.$parent.product_handle,
+				product_id : this.$parent.product_id,
 				items : this.$parent.products,
 				collections: this.$parent.collections,
 				placeholderUrl: this.$parent.placeholder_url,

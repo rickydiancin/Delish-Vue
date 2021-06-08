@@ -56,7 +56,9 @@ if(document.getElementById('seasonal-box')) {
 			collections: collections,
 			placeholder_url: placeholder_url,
 			status_type: status_type,
-			line: line
+			line: line,
+			product_handle: product_handle,
+			product_id: product_id
 		},
 	});
 }
