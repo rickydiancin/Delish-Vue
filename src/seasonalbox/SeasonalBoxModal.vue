@@ -280,7 +280,6 @@
 						handle: item.product_handle,
 						qty: 0,
 						price: item.price,
-						// imageurl:  item.imageurl,
 						image: item.imageurl !== "" ? item.imageurl : item.fullImageUrl !== null ? item.fullImageUrl : $this.placeholderUrl,
 						// image: item.fullImageUrl !== null ? item.fullImageUrl : item.fullImageUrl !== null ? item.imageurl : $this.placeholderUrl,
 						tags: [],
