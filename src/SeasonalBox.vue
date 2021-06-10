@@ -93,7 +93,7 @@
 		},
 		data() {
 			console.log('Route', this.$route)
-console.log('Parent', this.$parent)
+console.log('Products', this.$parent.products)
 			return {
 				product_handle : this.$parent.product_handle,
 				product_id : this.$parent.product_id,
