@@ -23,13 +23,13 @@
 							<input disabled="disabled" min="1" type="input" class="quantity" name="quantity" readonly :value="product.qty"/>
 							<button type="button">+</button>
 						</div>
-						<div class="replace-remove" v-if="customizable">
+						<!-- <div class="replace-remove" v-if="customizable"> -->
 							<!-- <a v-if="isAddBackable(product)" href="#" class="btn-replace btn btn-primary" @click="onaAddBack(product,$event)">Add back</a> -->
 							<!-- <a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="onRemoved" disabled>Removed</a>
 							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Replace</a> -->
-							<a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="removeItemBack(product,$event)">Deselect</a>
+							<!-- <a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="removeItemBack(product,$event)">Deselect</a>
 							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Select</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
