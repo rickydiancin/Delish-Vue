@@ -23,19 +23,19 @@
 							<input disabled="disabled" min="1" type="input" class="quantity" name="quantity" readonly :value="product.qty"/>
 							<button type="button">+</button>
 						</div>
-						<div class="replace-remove" v-if="customizable">
+						<!-- <div class="replace-remove" v-if="customizable"> -->
 							<!-- <a v-if="isAddBackable(product)" href="#" class="btn-replace btn btn-primary" @click="onaAddBack(product,$event)">Add back</a> -->
 							<!-- <a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="onRemoved" disabled>Removed</a>
 							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Replace</a> -->
-							<a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="removeItemBack(product,$event)">Deselect</a>
+							<!-- <a v-if="isRemoved(product)" href="#" class="btn-remove btn btn-border" @click="removeItemBack(product,$event)">Deselect</a>
 							<a v-else href="#" class="btn-remove btn btn-border" @click="removeItem(product,$event)">Select</a>
-						</div>
+						</div> -->
 					</div>
 				</div>
 			</div>
 		</div>
 		<div class="replace-selected-wrapper">
-			<a :href="'/pages/seasonal-box-customize?id='+product_id+'&handle='+product_handle"><button type="button" class="btn btn-primary replace-selected-items">Customize Your Boxes</button></a>
+			<a :href="'/pages/seasonal-box-customize?id='+product_id+'&handle='+product_handle"><button type="button" class="btn btn-primary replace-selected-items">Customize Your Box</button></a>
 			<!-- <button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button> -->
 			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
 			<a v-else-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
