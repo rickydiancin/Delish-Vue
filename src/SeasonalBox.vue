@@ -136,11 +136,17 @@ console.log('Products', this.$parent.products)
 		{
 			this.cartIcon = document.getElementsByClassName('cart-count-info');
 			$('.seasonal-box-detail input[name="subscription-type"]').change( this.onChangeSubscriptionType)    
-			$('.seasonal-box-detail #sb-add-to-cart').click( this.onAddToCart)    
+			$('.seasonal-box-detail #add-to-cart-form').click(this.onAddToCart);    
+			// $('.seasonal-box-detail').on('click', '#sb-add-to-cart', function(e) {
+			// 	// e.preventDefault();
+			// 	console.log('okasd2w');
+			// 	console.log(this.variantId);
+			// 	this.onAddToCart;
+			// })    
 		},
 		beforeDestroy(){
 			$('.seasonal-box-detail input[name="subscription-type"]').change(this.onChangeSubscriptionType)    
-			$('.seasonal-box-detail #sb-add-to-cart').click( this.onAddToCart);
+			$('.seasonal-box-detail #add-to-cart-form').click(this.onAddToCart); 
 		},
 		methods: {
 			onChangeSubscriptionType: function(e){
@@ -194,6 +200,9 @@ console.log('Products', this.$parent.products)
 				// console.log(formdata)
 				// console.log(this.$parent.type);
 
+				// console.log(this.variantId);
+				// console.log(this.$parent.status_type);
+
 				if(this.$parent.status_type == 'add') {
 
 					let data = {
@@ -215,7 +224,7 @@ console.log('Products', this.$parent.products)
 						Shopify.getCart(e=>{
 							//jquery
 							// console.log(e)
-							$('.cart-count-info').text(e.items.length);
+							$('.cart-count-info').text(`(${e.items.length})`);
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
@@ -394,6 +403,7 @@ console.log('Products', this.$parent.products)
 
 				return fd;
 			},
+
 			toData(obj) {
 				// let formKey;
 				var result = {};
