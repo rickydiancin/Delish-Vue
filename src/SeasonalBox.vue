@@ -183,7 +183,6 @@ console.log('Products', this.$parent.products)
 					customized: 1,
 
 				};
-
 				// let data = {
 				// 	'quantity': 1,
 				// 	'id': this.variantId,
