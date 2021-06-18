@@ -186,7 +186,7 @@ console.log('Products', this.$parent.products)
 					price: (this.price / 100).toFixed(2),
 					shipping_interval_frequency: this.subscriptionType,
 					product_type: 'seasonal_box',
-					customized: 1,
+					customized: true,
 
 				};
 				
