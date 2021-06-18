@@ -136,7 +136,7 @@ console.log('Products', this.$parent.products)
 		{
 			this.cartIcon = document.getElementsByClassName('cart-count-info');
 			$('.seasonal-box-detail input[name="subscription-type"]').change( this.onChangeSubscriptionType)    
-			$('.seasonal-box-detail #add-to-cart-form').click(this.onAddToCart);    
+			$('.seasonal-box-detail #sb-add-to-cart').click(this.onAddToCart);    
 			// $('.seasonal-box-detail').on('click', '#sb-add-to-cart', function(e) {
 			// 	// e.preventDefault();
 			// 	console.log('okasd2w');
@@ -146,7 +146,7 @@ console.log('Products', this.$parent.products)
 		},
 		beforeDestroy(){
 			$('.seasonal-box-detail input[name="subscription-type"]').change(this.onChangeSubscriptionType)    
-			$('.seasonal-box-detail #add-to-cart-form').click(this.onAddToCart); 
+			$('.seasonal-box-detail #sb-add-to-cart').click(this.onAddToCart); 
 		},
 		methods: {
 			onChangeSubscriptionType: function(e){
