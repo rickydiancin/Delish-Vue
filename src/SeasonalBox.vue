@@ -136,13 +136,7 @@ console.log('Products', this.$parent.products)
 		{
 			this.cartIcon = document.getElementsByClassName('cart-count-info');
 			$('.seasonal-box-detail input[name="subscription-type"]').change( this.onChangeSubscriptionType)    
-			$('.seasonal-box-detail #sb-add-to-cart').click(this.onAddToCart);    
-			// $('.seasonal-box-detail').on('click', '#sb-add-to-cart', function(e) {
-			// 	// e.preventDefault();
-			// 	console.log('okasd2w');
-			// 	console.log(this.variantId);
-			// 	this.onAddToCart;
-			// })    
+			$('.seasonal-box-detail #sb-add-to-cart').click(this.onAddToCart);
 		},
 		beforeDestroy(){
 			$('.seasonal-box-detail input[name="subscription-type"]').change(this.onChangeSubscriptionType)    
@@ -226,6 +220,7 @@ console.log('Products', this.$parent.products)
 							//jquery
 							// console.log(e)
 							$('.cart-count-info').text(`(${e.items.length})`);
+							$('.cart-count-info-item').text(`(${e.items.length})`);
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
@@ -262,6 +257,7 @@ console.log('Products', this.$parent.products)
 							//jquery
 							// console.log(e)
 							$('.cart-count-info').text(e.items.length);
+							$('.cart-count-info-item').text(e.items.length);
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
