@@ -40,7 +40,7 @@
 			<!-- </a> -->
 			<!-- <button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button> -->
 			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
-			<a v-else-if="status_type === 'add'" href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
+			<a v-else-if="status_type === 'add'" href="#" id="add_box_to_cart" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
 			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
 		</div>
 		<div v-if="modal">
@@ -148,7 +148,9 @@ console.log('Products', this.$parent.products)
 			},
 			onAddToCart: function(e){
 				e.preventDefault();
-
+				console.log('e: ',e)
+				e.target.setAttribute('disabled','disabled');
+				e.target.innerHTML = `<img style="height:100%" id="blah" src="//cdn.shopify.com/s/files/1/0574/9260/3048/t/10/assets/loadding-icon.gif?v=3617089978062245605" alt="your image" />`
 				// console.log(this.newProducts.length !== 0);
 				// console.log(this.removed.length !== 0);
 				// console.log(_.isEqual(_.sortBy(this.items), _.sortBy(this.$parent.products)));
@@ -215,6 +217,8 @@ console.log('Products', this.$parent.products)
 							priority : 'success' ,
 							fadeAway: 4000 
 						});
+						e.target.innerHTML = `Add box to cart`;
+						e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
 							//jquery
@@ -225,6 +229,8 @@ console.log('Products', this.$parent.products)
 						});
 					}).catch((err)=>{
 						this.$toasted.error('Something went wrong. Please try again.');
+						e.target.innerHTML = `Add box to cart`;
+						e.target.removeAttribute('disabled');
 					});
 
 				} else {
@@ -252,6 +258,8 @@ console.log('Products', this.$parent.products)
 							priority : 'success' ,
 							fadeAway: 4000 
 						});
+						e.target.innerHTML = `Add box to cart`;
+						e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
 							//jquery
@@ -262,6 +270,8 @@ console.log('Products', this.$parent.products)
 						});
 					}).catch((err)=>{
 						console.log(err)
+						e.target.innerHTML = `Add box to cart`;
+						e.target.removeAttribute('disabled');
 						this.$toasted.error('Something went wrong. Please try again.');
 					});
 
