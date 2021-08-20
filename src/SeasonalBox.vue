@@ -96,8 +96,12 @@
 		data() {
 			console.log('Route', this.$route)
 console.log('Products', this.$parent.products)
+console.log('this.$parent.customer', this.$parent.customer)
+console.log('this.$parent.product_title', this.$parent.product_title)
 			return {
 				product_handle : this.$parent.product_handle,
+				customer : this.$parent.customer,
+				product_title : this.$parent.product_title,
 				product_id : this.$parent.product_id,
 				items : this.$parent.products,
 				collections: this.$parent.collections,
@@ -211,6 +215,29 @@ console.log('Products', this.$parent.products)
 
 					axios.post('/cart/add.js',formdata)
 					.then((res) => {
+
+						if(this.customer !== null) {
+							let etd = {
+								customer:{
+									email: this.customer
+								},
+								product_name: this.product_title,
+								qty: 1,
+								price: (this.price / 100).toFixed(2)
+							}
+							
+							console.log('etd', etd)
+
+							$.ajax({
+								type: "post",
+								url: window.apiUrl+'orders/add-to-cart',
+								data: etd,
+								success: function(et) {
+									console.log('et', et)
+								}
+							})
+						}
+
 						$.toaster({ 
 							message : 'Product added to cart successfully.',
 							title : '',
