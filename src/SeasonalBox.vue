@@ -215,8 +215,9 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 
 					axios.post('/cart/add.js',formdata)
 					.then((res) => {
+						console.log('email', this.customer)
 
-						if(this.customer !== null) {
+						if(this.customer !== "") {
 							let etd = {
 								customer:{
 									email: this.customer
@@ -226,7 +227,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								price: (this.price / 100).toFixed(2)
 							}
 							
-							console.log('etd', etd)
+							console.log('etds', etd)
 
 							$.ajax({
 								type: "post",
