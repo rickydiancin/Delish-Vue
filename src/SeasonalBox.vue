@@ -19,9 +19,12 @@
 					</div>
 					<div class="col-md-4  col-sm-12 col-12">
 						<div class="nice-number">
-							<button type="button">-</button>
+							<!-- <button type="button">-</button> -->
 							<input disabled="disabled" min="1" type="input" class="quantity" name="quantity" readonly :value="product.qty"/>
-							<button type="button">+</button>
+							<!-- <button type="button">+</button> -->
+						</div>
+						<div class="replace-remove">
+							<a href="#" class="btn-remove btn btn-border customize-box">Replace</a>
 						</div>
 						<!-- <div class="replace-remove" v-if="customizable"> -->
 							<!-- <a v-if="isAddBackable(product)" href="#" class="btn-replace btn btn-primary" @click="onaAddBack(product,$event)">Add back</a> -->
