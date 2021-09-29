@@ -230,14 +230,29 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								price: (this.price / 100).toFixed(2)
 							}
 							
-							console.log('etds', etd)
+							console.log('etds', etd);
+							$(e.target).css({
+								"pointer-events": "none",
+								'color': '#fff',
+								'background-color': '#215243',
+								'border-color': '#215243'
+							});
+							e.target.removeAttribute('disabled');
+							e.target.innerHTML = "Added";
+							$('#add_box_to_cart').html('Added').css({
+								"pointer-events": "none",
+								'color': '#fff',
+								'background-color': '#215243',
+								'border-color': '#215243'
+							});
 
 							$.ajax({
 								type: "post",
 								url: window.apiUrl+'orders/add-to-cart',
 								data: etd,
 								success: function(et) {
-									console.log('et', et)
+									console.log('et', et);
+									
 								}
 							})
 						}
@@ -248,8 +263,8 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							priority : 'success' ,
 							fadeAway: 4000 
 						});
-						e.target.innerHTML = `Add box to cart`;
-						e.target.removeAttribute('disabled');
+						// e.target.innerHTML = `Add box to cart`;
+						// e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
 							//jquery
