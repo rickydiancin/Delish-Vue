@@ -40,7 +40,7 @@
 			<!-- </a> -->
 			<!-- <button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button> -->
 			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
-			<a v-else-if="status_type === 'add'" href="#" id="add_box_to_cart" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
+			<a v-else-if="status_type === 'add'" href="#" id="add_box_to_cart" class="btn btn-secondary replace-selected-items" @click="onAddToCart">+ Add to cart</a>
 			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
 		</div>
 		<div v-if="modal">
@@ -60,7 +60,7 @@
 </template>
 <style scoped="scss">
 .detail .nice-number {
-	background-color: #b7b7b7;
+	background-color: #b7b7b7 !important;
 }
 </style>
 <script>
@@ -245,7 +245,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							priority : 'success' ,
 							fadeAway: 4000 
 						});
-						e.target.innerHTML = `Add box to cart`;
+						e.target.innerHTML = `+ Add to cart`;
 						e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
@@ -257,7 +257,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 						});
 					}).catch((err)=>{
 						this.$toasted.error('Something went wrong. Please try again.');
-						e.target.innerHTML = `Add box to cart`;
+						e.target.innerHTML = `+ Add to cart`;
 						e.target.removeAttribute('disabled');
 					});
 
@@ -286,7 +286,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							priority : 'success' ,
 							fadeAway: 4000 
 						});
-						e.target.innerHTML = `Add box to cart`;
+						e.target.innerHTML = `+ Add to cart`;
 						e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
@@ -298,7 +298,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 						});
 					}).catch((err)=>{
 						console.log(err)
-						e.target.innerHTML = `Add box to cart`;
+						e.target.innerHTML = `+ Add to cart`;
 						e.target.removeAttribute('disabled');
 						this.$toasted.error('Something went wrong. Please try again.');
 					});
