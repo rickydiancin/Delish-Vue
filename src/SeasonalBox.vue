@@ -219,6 +219,20 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 					axios.post('/cart/add.js',formdata)
 					.then((res) => {
 						console.log('email', this.customer)
+						// 	$(e.target).css({
+						// 		"pointer-events": "none",
+						// 		'color': '#fff',
+						// 		'background-color': '#215243',
+						// 		'border-color': '#215243'
+						// 	});
+						// 	e.target.removeAttribute('disabled');
+						// 	e.target.innerHTML = "Added";
+						// 	$('#add_box_to_cart').html('Added').css({
+						// 		"pointer-events": "none",
+						// 		'color': '#fff',
+						// 		'background-color': '#215243',
+						// 		'border-color': '#215243'
+						// });
 
 						if(this.customer !== "") {
 							let etd = {
@@ -229,9 +243,19 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								qty: 1,
 								price: (this.price / 100).toFixed(2)
 							}
-							
-							console.log('etds', etd);
-							$(e.target).css({
+
+							$.ajax({
+								type: "post",
+								url: window.apiUrl+'orders/add-to-cart',
+								data: etd,
+								success: function(et) {
+									console.log('et', et);
+									
+								}
+							})
+						}
+
+						$(e.target).css({
 								"pointer-events": "none",
 								'color': '#fff',
 								'background-color': '#215243',
@@ -244,18 +268,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								'color': '#fff',
 								'background-color': '#215243',
 								'border-color': '#215243'
-							});
-
-							$.ajax({
-								type: "post",
-								url: window.apiUrl+'orders/add-to-cart',
-								data: etd,
-								success: function(et) {
-									console.log('et', et);
-									
-								}
-							})
-						}
+						});
 
 						$.toaster({ 
 							message : 'Product added to cart successfully.',
@@ -274,6 +287,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
+						console.log(err)
 						this.$toasted.error('Something went wrong. Please try again.');
 						e.target.innerHTML = `+ Add to cart`;
 						e.target.removeAttribute('disabled');
