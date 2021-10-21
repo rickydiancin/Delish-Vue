@@ -234,26 +234,26 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 						// 		'border-color': '#215243'
 						// });
 
-						if(this.customer !== "") {
-							let etd = {
-								customer:{
-									email: this.customer
-								},
-								product_name: this.product_title,
-								qty: 1,
-								price: (this.price / 100).toFixed(2)
-							}
+						// if(this.customer !== "") {
+						// 	let etd = {
+						// 		customer:{
+						// 			email: this.customer
+						// 		},
+						// 		product_name: this.product_title,
+						// 		qty: 1,
+						// 		price: (this.price / 100).toFixed(2)
+						// 	}
 
-							$.ajax({
-								type: "post",
-								url: window.apiUrl+'orders/add-to-cart',
-								data: etd,
-								success: function(et) {
-									console.log('et', et);
+						// 	$.ajax({
+						// 		type: "post",
+						// 		url: window.apiUrl+'orders/add-to-cart',
+						// 		data: etd,
+						// 		success: function(et) {
+						// 			console.log('et', et);
 									
-								}
-							})
-						}
+						// 		}
+						// 	})
+						// }
 
 						$(e.target).css({
 								"pointer-events": "none",
@@ -281,7 +281,26 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 
 						Shopify.getCart(e=>{
 							//jquery
-							// console.log(e)
+							if(this.customer !== null) {
+								let etd = {
+								customer_id: this.customer,
+								products: e.items
+							}
+				
+							console.log(etd)
+					
+								$.ajax({
+								type: "post",
+								url: window.apiUrl+'customers/add_to_cart',
+								data: etd,
+								success: function(et) {
+									console.log('etetetetetet: ', et)
+								},
+								error: function(err) {
+									console.log(err)
+								}
+								})
+							}
 							$('.cart-count-info').text(`(${e.items.length})`);
 							$('.cart-count-info-item').text(`(${e.items.length})`);
 							// $('.cart-count-info').text(e.item_count);
