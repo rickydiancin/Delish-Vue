@@ -301,8 +301,11 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								}
 								})
 							}
-							$('.cart-count-info').text(`(${e.items.length})`);
-							$('.cart-count-info-item').text(`(${e.items.length})`);
+
+							$('.cart-count-info').html(`($${e.total_price / 100})`);
+							$('.cart-count-info-item').html(`($${e.total_price / 100})`)
+							// $('.cart-count-info').html(`(${e.items.length})`);
+							// $('.cart-count-info-item').html(`(${e.items.length})`);
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
