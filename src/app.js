@@ -13,7 +13,7 @@ import VuejsDialog from 'vuejs-dialog';
 
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 
-window.middleware_base_url = 'https://delishdevelopment.com.au/';
+window.middleware_base_url = 'http://admin.delishdelivery.com.au/';
  //window.middleware_base_url = 'https://shopify.draftserver.com/delish-deliveries/public/';
 window.default_image = window.middleware_base_url + 'images/placeholder-200x200.png';
 

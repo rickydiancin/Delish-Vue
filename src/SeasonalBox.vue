@@ -270,12 +270,12 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								'border-color': '#215243'
 						});
 
-						$.toaster({ 
-							message : 'Product added to cart successfully.',
-							title : '',
-							priority : 'success' ,
-							fadeAway: 4000 
-						});
+						// $.toaster({ 
+						// 	message : 'Product added to cart successfully.',
+						// 	title : '',
+						// 	priority : 'success' ,
+						// 	fadeAway: 4000 
+						// });
 						// e.target.innerHTML = `Add box to cart`;
 						// e.target.removeAttribute('disabled');
 
@@ -302,8 +302,8 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 								})
 							}
 
-							$('.cart-count-info').html(`($${e.total_price / 100})`);
-							$('.cart-count-info-item').html(`($${e.total_price / 100})`)
+							$('.cart-count-info').html(`($${parseInt(e.total_price / 100)})`);
+							$('.cart-count-info-item').html(`($${parseInt(e.total_price / 100)})`)
 							// $('.cart-count-info').html(`(${e.items.length})`);
 							// $('.cart-count-info-item').html(`(${e.items.length})`);
 							// $('.cart-count-info').text(e.item_count);
@@ -334,20 +334,20 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 					let formdata = this.toData(data);
 					axios.post('/cart/change.js',formdata)
 					.then((res) => {
-						$.toaster({ 
-							message : 'Product added to cart successfully.',
-							title : '',
-							priority : 'success' ,
-							fadeAway: 4000 
-						});
-						e.target.innerHTML = `+ Add to cart`;
+						// $.toaster({ 
+						// 	message : 'Product added to cart successfully.',
+						// 	title : '',
+						// 	priority : 'success' ,
+						// 	fadeAway: 4000 
+						// });
+						e.target.innerHTML = `Add box to cart`;
 						e.target.removeAttribute('disabled');
 
 						Shopify.getCart(e=>{
 							//jquery
 							// console.log(e)
-							$('.cart-count-info').text(e.items.length);
-							$('.cart-count-info-item').text(e.items.length);
+							$('.cart-count-info').html(`($${parseInt(e.total_price / 100)})`);
+							$('.cart-count-info-item').html(`($${parseInt(e.total_price / 100)})`);
 							// $('.cart-count-info').text(e.item_count);
 						});
 					}).catch((err)=>{
