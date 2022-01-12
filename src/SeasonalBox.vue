@@ -11,7 +11,7 @@
 							</li>
 						</ul>
 						<div class="image">
-							<img :src="product.image" :alt="product.title">
+							<img onerror="handleError(this);" :src="product.image" :alt="product.title">
 						</div>
 					</div>
 					<div class="col-md-6  col-sm-6 col-7">
