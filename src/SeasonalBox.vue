@@ -284,7 +284,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							if(this.customer !== null) {
 								let etd = {
 								customer_id: this.customer,
-								products: e.items
+								products: e.items.filter((fp) => fp.properties.custom_price != "0")
 							}
 				
 							console.log(etd)
