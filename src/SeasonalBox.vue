@@ -266,6 +266,7 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							e.target.innerHTML = "Added";
 							$('#add-to-cart-form .btn-wrap').html(`<a href="https://christmas.delishdeliveries.com.au/cart" id="view-cart-btn" class="btn btn-primary">View on Cart</a>`)
 							$('#shopify-section-recipe-product-template .replace-selected-wrapper').html(`<a href="https://christmas.delishdeliveries.com.au/cart" class="btn btn-primary replace-selected-items customize-box">View on Cart</a>`)
+							$('#shopify-section-recipe-product-template #seasonal-box .sb-item .replace-remove').html(`<a href="#" class="btn-remove btn btn-border disabled" disabled="">Replace</a>`);
 						// 	$('#add_box_to_cart').html('Added').css({
 						// 		"pointer-events": "none",
 						// 		'color': '#fff',
