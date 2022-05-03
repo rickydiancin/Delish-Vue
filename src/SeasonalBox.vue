@@ -39,12 +39,13 @@
 		</div>
 		<div class="replace-selected-wrapper">
 			<!-- <a :href="'/pages/seasonal-box-customize?id='+product_id+'&handle='+product_handle"> -->
-			<button type="button" v-if="customizable" class="btn btn-primary replace-selected-items customize-box">Customize Your Box</button>
+			<button type="button" v-if="customizable && (status_type === 'addItem' || status_type === 'add')" class="btn btn-primary replace-selected-items customize-box">Customize Your Box</button>
+			<a href="/cart" role="button" v-if="status_type !== 'addItem' && status_type !== 'add'" class="btn btn-primary replace-selected-items">View on Cart</a>
 			<!-- </a> -->
 			<!-- <button type="button" v-if="customizable" :disabled="!isReplaceable" class="btn btn-primary replace-selected-items" @click="openPopup">Replace Selected items</button> -->
 			<a v-if="status_type === 'addItem'" href="#" class="btn btn-secondary replace-selected-items" id="add-box-to-order">Add box to order</a>
 			<a v-else-if="status_type === 'add'" href="#" id="add_box_to_cart" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Add box to cart</a>
-			<a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a>
+			<!-- <a v-else href="#" class="btn btn-secondary replace-selected-items" @click="onAddToCart">Update box</a> -->
 		</div>
 		<div v-if="modal">
 			<SeasonalBoxModal
@@ -263,12 +264,14 @@ console.log('this.$parent.product_title', this.$parent.product_title)
 							});
 							e.target.removeAttribute('disabled');
 							e.target.innerHTML = "Added";
-							$('#add_box_to_cart').html('Added').css({
-								"pointer-events": "none",
-								'color': '#fff',
-								'background-color': '#215243',
-								'border-color': '#215243'
-						});
+							$('#add-to-cart-form .btn-wrap').html(`<a href="https://christmas.delishdeliveries.com.au/cart" id="view-cart-btn" class="btn btn-primary">View on Cart</a>`)
+							$('#shopify-section-recipe-product-template .replace-selected-wrapper').html(`<a href="https://christmas.delishdeliveries.com.au/cart" class="btn btn-primary replace-selected-items customize-box">View on Cart</a>`)
+						// 	$('#add_box_to_cart').html('Added').css({
+						// 		"pointer-events": "none",
+						// 		'color': '#fff',
+						// 		'background-color': '#215243',
+						// 		'border-color': '#215243'
+						// });
 
 						// $.toaster({ 
 						// 	message : 'Product added to cart successfully.',
